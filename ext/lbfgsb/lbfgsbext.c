@@ -1,0 +1,153 @@
+#include "lbfgsbext.h"
+
+VALUE rb_mLbfgsb;
+
+
+static
+VALUE lbfgsb_minimize(VALUE self,
+  VALUE fnc, VALUE x_val, VALUE jcb, VALUE args,
+  VALUE l_val, VALUE u_val, VALUE nbd_val,
+  VALUE maxcor, VALUE ftol, VALUE gtol, VALUE maxiter, VALUE disp)
+{
+  long i;
+  long n_iter;
+  long max_iter = NUM2LONG(maxiter);
+  narray_t* x_nary;
+  narray_t* l_nary;
+  narray_t* u_nary;
+  narray_t* nbd_nary;
+  long n;
+  long m = NUM2LONG(maxcor);
+  double *x_ptr;
+  double *l_ptr;
+  double *u_ptr;
+  long *nbd_ptr;
+  double f;
+  double *g;
+  double factr = NUM2DBL(ftol);
+  double pgtol = NUM2DBL(gtol);
+  double* wa;
+  long* iwa;
+  char task[60];
+  long iprint = NIL_P(disp) ? -1 : NUM2LONG(disp);
+  char csave[60];
+  long lsave[4];
+  long isave[44];
+  double dsave[29];
+  double* g_ptr;
+  VALUE g_val;
+  VALUE ret;
+
+  GetNArray(x_val, x_nary);
+  if (NA_NDIM(x_nary) != 1) {
+    rb_raise(rb_eArgError, "x must be a 1-D array.");
+    return Qnil;
+  }
+  n = (long)NA_SIZE(x_nary);
+  if (CLASS_OF(x_val) != numo_cDFloat) {
+    x_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, x_val);
+  }
+  if (!RTEST(nary_check_contiguous(x_val))) {
+    x_val = nary_dup(x_val);
+  }
+
+  GetNArray(l_val, l_nary);
+  if (NA_NDIM(l_nary) != 1) {
+    rb_raise(rb_eArgError, "l must be a 1-D array.");
+    return Qnil;
+  }
+  if ((long)NA_SIZE(l_nary) != n) {
+    rb_raise(rb_eArgError, "The size of l must be equal to that of x.");
+    return Qnil;
+  }
+  if (CLASS_OF(l_val) != numo_cDFloat) {
+    l_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, l_val);
+  }
+  if (!RTEST(nary_check_contiguous(l_val))) {
+    l_val = nary_dup(l_val);
+  }
+
+  GetNArray(u_val, u_nary);
+  if (NA_NDIM(u_nary) != 1) {
+    rb_raise(rb_eArgError, "u must be a 1-D array.");
+    return Qnil;
+  }
+  if ((long)NA_SIZE(u_nary) != n) {
+    rb_raise(rb_eArgError, "The size of u must be equal to that of x.");
+    return Qnil;
+  }
+  if (CLASS_OF(u_val) != numo_cDFloat) {
+    u_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, u_val);
+  }
+  if (!RTEST(nary_check_contiguous(u_val))) {
+    u_val = nary_dup(u_val);
+  }
+
+  GetNArray(nbd_val, nbd_nary);
+  if (NA_NDIM(nbd_nary) != 1) {
+    rb_raise(rb_eArgError, "nbd must be a 1-D array.");
+    return Qnil;
+  }
+  if ((long)NA_SIZE(nbd_nary) != n) {
+    rb_raise(rb_eArgError, "The size of nbd must be equal to that of x.");
+    return Qnil;
+  }
+  if (CLASS_OF(nbd_val) != numo_cInt64) {
+    nbd_val = rb_funcall(numo_cInt64, rb_intern("cast"), 1, nbd_val);
+  }
+  if (!RTEST(nary_check_contiguous(nbd_val))) {
+    nbd_val = nary_dup(nbd_val);
+  }
+
+  x_ptr = (double*)na_get_pointer_for_read_write(x_val);
+  l_ptr = (double*)na_get_pointer_for_read(l_val);
+  u_ptr = (double*)na_get_pointer_for_read(u_val);
+  nbd_ptr = (long*)na_get_pointer_for_read(nbd_val);
+  g = ALLOC_N(double, n);
+  wa = ALLOC_N(double, (2 * m + 5) * n + 12 * m * m + 12 * m);
+  iwa = ALLOC_N(long, 3 * n);
+
+  f = 0.0;
+  for (i = 0; i < n; g[i++] = 0.0);
+  strcpy(task, "START");
+
+  for (n_iter = 0; n_iter < max_iter;) {
+    setulb_(
+      &n, &m, x_ptr, l_ptr, u_ptr, nbd_ptr, &f, g, &factr, &pgtol, wa, iwa,
+      task, &iprint, csave, lsave, isave, dsave
+    );
+    if (strncmp(task, "FG", 2) == 0) {
+      f = NUM2DBL(rb_funcall(fnc, rb_intern("call"), 2, x_val, args));
+      g_val = rb_funcall(jcb, rb_intern("call"), 2, x_val, args);
+      if (CLASS_OF(g_val) != numo_cDFloat) g_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, g_val);
+      if (!RTEST(nary_check_contiguous(g_val))) g_val = nary_dup(g_val);
+      g_ptr = (double*)na_get_pointer_for_read(g_val);
+      for (i = 0; i < n; i++) g[i] = g_ptr[i];
+    } else if (strncmp(task, "NEW_X", 5) == 0) {
+      n_iter += 1;
+      continue;
+    } else {
+      break;
+    }
+  }
+
+  xfree(g);
+  xfree(wa);
+  xfree(iwa);
+
+  ret = rb_hash_new();
+  rb_hash_aset(ret, ID2SYM(rb_intern("task")), rb_str_new_cstr(task));
+  rb_hash_aset(ret, ID2SYM(rb_intern("x")), x_val);
+  rb_hash_aset(ret, ID2SYM(rb_intern("fnc")), DBL2NUM(f));
+
+  return ret;
+}
+
+void
+Init_lbfgsbext(void)
+{
+  rb_require("numo/narray");
+
+  rb_mLbfgsb = rb_define_module("Lbfgsb");
+  rb_define_module_function(rb_mLbfgsb, "minimize", lbfgsb_minimize, 12);
+}
