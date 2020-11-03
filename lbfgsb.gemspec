@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['yoshoku']
   spec.email         = ['yoshoku@outlook.com']
 
-  spec.summary       = %q{Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
+  spec.summary       = 'Lbfgsb.rb is a Ruby binding for L-BFGS-B'
+  spec.description   = 'Lbfgsb.rb is a Ruby binding for L-BFGS-B'
   spec.homepage      = 'https://github.com/yoshoku/lbfgsb.rb'
   spec.license       = 'BSD-3-Clause'
 
