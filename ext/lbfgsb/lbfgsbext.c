@@ -162,6 +162,7 @@ void
 Init_lbfgsbext(void)
 {
   rb_mLbfgsb = rb_define_module("Lbfgsb");
+  /* The value of double epsilon used in the native extension. */
   rb_define_const(rb_mLbfgsb, "DBL_EPSILON", DBL2NUM(DBL_EPSILON));
   /* @!visibility private */
   rb_define_module_function(rb_mLbfgsb, "min_l_bfgs_b", lbfgsb_min_l_bfgs_b, 12);
