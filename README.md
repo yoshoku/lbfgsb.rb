@@ -28,3 +28,12 @@ TODO: Write usage instructions here
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/yoshoku/lbfgsb.
+
+## License
+
+The gem is available as open source under the terms of the [BSD-3-Clause License](https://opensource.org/licenses/BSD-3-Clause).
+In addition, L-BFGS-B carries the following condition for use:
+
+This software is freely available, but we expect that all publications describing  work using this software ,
+or all commercial products using it, quote at least one of the references given below.
+This software is released under the "New BSD License" (aka "Modified BSD License" or "3-clause license").
