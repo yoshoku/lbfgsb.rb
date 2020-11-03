@@ -120,9 +120,14 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
       task, &iprint, csave, lsave, isave, dsave
     );
     if (strncmp(task, "FG", 2) == 0) {
-      f = NUM2DBL(rb_funcall(fnc, rb_intern("call"), 2, x_val, args));
+      if (NIL_P(args)) {
+        f = NUM2DBL(rb_funcall(fnc, rb_intern("call"), 1, x_val));
+        g_val = rb_funcall(jcb, rb_intern("call"), 1, x_val);
+      } else {
+        f = NUM2DBL(rb_funcall(fnc, rb_intern("call"), 2, x_val, args));
+        g_val = rb_funcall(jcb, rb_intern("call"), 2, x_val, args);
+      }
       n_fev += 1;
-      g_val = rb_funcall(jcb, rb_intern("call"), 2, x_val, args);
       n_jev += 1;
       if (CLASS_OF(g_val) != numo_cDFloat) g_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, g_val);
       if (!RTEST(nary_check_contiguous(g_val))) g_val = nary_dup(g_val);
@@ -158,5 +163,6 @@ Init_lbfgsbext(void)
 {
   rb_mLbfgsb = rb_define_module("Lbfgsb");
   rb_define_const(rb_mLbfgsb, "DBL_EPSILON", DBL2NUM(DBL_EPSILON));
+  /* @!visibility private */
   rb_define_module_function(rb_mLbfgsb, "min_l_bfgs_b", lbfgsb_min_l_bfgs_b, 12);
 }
