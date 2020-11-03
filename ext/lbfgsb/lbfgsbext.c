@@ -2,15 +2,16 @@
 
 VALUE rb_mLbfgsb;
 
-
 static
-VALUE lbfgsb_minimize(VALUE self,
+VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   VALUE fnc, VALUE x_val, VALUE jcb, VALUE args,
   VALUE l_val, VALUE u_val, VALUE nbd_val,
   VALUE maxcor, VALUE ftol, VALUE gtol, VALUE maxiter, VALUE disp)
 {
   long i;
   long n_iter;
+  long n_fev;
+  long n_jev;
   long max_iter = NUM2LONG(maxiter);
   narray_t* x_nary;
   narray_t* l_nary;
@@ -110,6 +111,8 @@ VALUE lbfgsb_minimize(VALUE self,
   f = 0.0;
   for (i = 0; i < n; g[i++] = 0.0);
   strcpy(task, "START");
+  n_fev = 0;
+  n_jev = 0;
 
   for (n_iter = 0; n_iter < max_iter;) {
     setulb_(
@@ -118,7 +121,9 @@ VALUE lbfgsb_minimize(VALUE self,
     );
     if (strncmp(task, "FG", 2) == 0) {
       f = NUM2DBL(rb_funcall(fnc, rb_intern("call"), 2, x_val, args));
+      n_fev += 1;
       g_val = rb_funcall(jcb, rb_intern("call"), 2, x_val, args);
+      n_jev += 1;
       if (CLASS_OF(g_val) != numo_cDFloat) g_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, g_val);
       if (!RTEST(nary_check_contiguous(g_val))) g_val = nary_dup(g_val);
       g_ptr = (double*)na_get_pointer_for_read(g_val);
@@ -139,6 +144,11 @@ VALUE lbfgsb_minimize(VALUE self,
   rb_hash_aset(ret, ID2SYM(rb_intern("task")), rb_str_new_cstr(task));
   rb_hash_aset(ret, ID2SYM(rb_intern("x")), x_val);
   rb_hash_aset(ret, ID2SYM(rb_intern("fnc")), DBL2NUM(f));
+  rb_hash_aset(ret, ID2SYM(rb_intern("jcb")), g_val);
+  rb_hash_aset(ret, ID2SYM(rb_intern("n_iter")), LONG2NUM(n_iter));
+  rb_hash_aset(ret, ID2SYM(rb_intern("n_fev")), LONG2NUM(n_fev));
+  rb_hash_aset(ret, ID2SYM(rb_intern("n_jev")), LONG2NUM(n_jev));
+  rb_hash_aset(ret, ID2SYM(rb_intern("success")), strncmp(task, "CONV", 4) == 0 ? Qtrue : Qfalse);
 
   return ret;
 }
@@ -146,8 +156,7 @@ VALUE lbfgsb_minimize(VALUE self,
 void
 Init_lbfgsbext(void)
 {
-  rb_require("numo/narray");
-
   rb_mLbfgsb = rb_define_module("Lbfgsb");
-  rb_define_module_function(rb_mLbfgsb, "minimize", lbfgsb_minimize, 12);
+  rb_define_const(rb_mLbfgsb, "DBL_EPSILON", DBL2NUM(DBL_EPSILON));
+  rb_define_module_function(rb_mLbfgsb, "min_l_bfgs_b", lbfgsb_min_l_bfgs_b, 12);
 }
