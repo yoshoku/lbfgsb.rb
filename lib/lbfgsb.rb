@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'numo/narray'
+
 require 'lbfgsb/version'
 require 'lbfgsb/lbfgsbext'
 
@@ -12,7 +13,7 @@ module Lbfgsb
   # @param fnc [Method/Proc] Method for calculating the function to be minimized.
   # @param x_init [Numo::DFloat] (shape: [n_elements]) Initial point.
   # @param jcb [Method/Proc] Method for calculating the gradient vector.
-  # @param args [Array/Hash] Arguments pass to the 'fnc' and 'jcb'.
+  # @param args [Object] Arguments pass to the 'fnc' and 'jcb'.
   # @param bounds [Numo::DFloat/Nil] (shape: [n_elements, 2])
   #   \[lower, upper\] bounds for each element x. If nil is given, x is unbounded.
   # @param factr [Float] The iteration will be stop when
@@ -53,5 +54,31 @@ module Lbfgsb
     min_l_bfgs_b(fnc, x_init, jcb, args, l, u, nbd, maxcor, factr, pgtol, maxiter, verbose)
   end
 
-  private_class_method :min_l_bfgs_b
+  # @!visibility private
+  def fnc(fnc, x, args)
+    if args.is_a?(Hash)
+      fnc.call(x, **args)
+    elsif args.is_a?(Array)
+      fnc.call(x, *args)
+    elsif args.nil?
+      fnc.call(x)
+    else
+      fnc.call(x, args)
+    end
+  end
+
+  # @!visibility private
+  def jcb(jcb, x, args)
+    if args.is_a?(Hash)
+      jcb.call(x, **args)
+    elsif args.is_a?(Array)
+      jcb.call(x, *args)
+    elsif args.nil?
+      jcb.call(x)
+    else
+      jcb.call(x, args)
+    end
+  end
+
+  private_class_method :fnc, :jcb, :min_l_bfgs_b
 end
