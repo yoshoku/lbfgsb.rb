@@ -1,4 +1,9 @@
 # Lbfgsb.rb
+
+[![Build Status](https://github.com/yoshoku/lbfgsb.rb/workflows/build/badge.svg)](https://github.com/yoshoku/lbfgsb.rb/actions?query=workflow%3Abuild)
+[![Gem Version](https://badge.fury.io/rb/lbfgsb.svg)](https://badge.fury.io/rb/lbfgsb)
+[![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/suika/blob/master/LICENSE.txt)
+
 Lbfgsb.rb is a Ruby binding for [L-BFGS-B](http://users.iems.northwestern.edu/~nocedal/lbfgsb.html)
 that is a limited-memory algorithm for solving large nonlinear optimization problems
 subject to simple bounds on the variables.
