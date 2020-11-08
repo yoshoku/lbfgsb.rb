@@ -13,7 +13,8 @@ Gem::Specification.new do |spec|
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/yoshoku/lbfgsb.rb'
-  spec.metadata['changelog_uri'] = 'https://github.com/yoshoku/lbfgsb.rb/CHANGELOG.md'
+  spec.metadata['changelog_uri'] = 'https://github.com/yoshoku/lbfgsb.rb/blob/main/CHANGELOG.md'
+  spec.metadata['documentation_uri'] = 'https://yoshoku.github.io/lbfgsb.rb/doc/'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
