@@ -37,6 +37,7 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   double dsave[29];
   double* g_ptr;
   VALUE g_val;
+  VALUE fg_arr;
   VALUE ret;
 
   GetNArray(x_val, x_nary);
@@ -120,8 +121,14 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
       task, &iprint, csave, lsave, isave, dsave
     );
     if (strncmp(task, "FG", 2) == 0) {
-      f = NUM2DBL(rb_funcall(self, rb_intern("fnc"), 3, fnc, x_val, args));
-      g_val = rb_funcall(self, rb_intern("jcb"), 3, jcb, x_val, args);
+      if (RB_TYPE_P(jcb, T_TRUE)) {
+        fg_arr = rb_funcall(self, rb_intern("fnc"), 3, fnc, x_val, args);
+        f = NUM2DBL(rb_ary_entry(fg_arr, 0));
+        g_val = rb_ary_entry(fg_arr, 1);
+      } else {
+        f = NUM2DBL(rb_funcall(self, rb_intern("fnc"), 3, fnc, x_val, args));
+        g_val = rb_funcall(self, rb_intern("jcb"), 3, jcb, x_val, args);
+      }
       n_fev += 1;
       n_jev += 1;
       if (CLASS_OF(g_val) != numo_cDFloat) g_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, g_val);

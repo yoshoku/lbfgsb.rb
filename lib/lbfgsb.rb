@@ -12,7 +12,8 @@ module Lbfgsb
   #
   # @param fnc [Method/Proc] Method for calculating the function to be minimized.
   # @param x_init [Numo::DFloat] (shape: [n_elements]) Initial point.
-  # @param jcb [Method/Proc] Method for calculating the gradient vector.
+  # @param jcb [Method/Proc/Boolean] Method for calculating the gradient vector.
+  #   If true is given, fnc is assumed to return the function value and gardient vector as [f, g] array.
   # @param args [Object] Arguments pass to the 'fnc' and 'jcb'.
   # @param bounds [Numo::DFloat/Nil] (shape: [n_elements, 2])
   #   \[lower, upper\] bounds for each element x. If nil is given, x is unbounded.
