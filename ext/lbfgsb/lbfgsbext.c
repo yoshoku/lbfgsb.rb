@@ -109,6 +109,7 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   wa = ALLOC_N(double, (2 * m + 5) * n + 12 * m * m + 12 * m);
   iwa = ALLOC_N(long, 3 * n);
 
+  g_val = Qnil;
   f = 0.0;
   for (i = 0; i < n; g[i++] = 0.0);
   strcpy(task, "START");
