@@ -5,7 +5,7 @@
  */
 #include "blas.h"
 
-int daxpy_(long *n, double *da, double *dx, long *incx, double *dy, long *incy)
+int lbfgsb_rb_daxpy_(long *n, double *da, double *dx, long *incx, double *dy, long *incy)
 {
   long i__1;
   static long i__, m, ix, iy, mp1;
@@ -70,7 +70,7 @@ L40:
   return 0;
 }
 
-int dcopy_(long *n, double *dx, long *incx, double *dy, long *incy)
+int lbfgsb_rb_dcopy_(long *n, double *dx, long *incx, double *dy, long *incy)
 {
   long i__1;
   static long i__, m, ix, iy, mp1;
@@ -135,7 +135,7 @@ L40:
   return 0;
 }
 
-double ddot_(long *n, double *dx, long *incx, double *dy, long *incy)
+double lbfgsb_rb_ddot_(long *n, double *dx, long *incx, double *dy, long *incy)
 {
   long i__1;
   double ret_val;
@@ -202,7 +202,7 @@ L60:
   return ret_val;
 }
 
-int dscal_(long *n, double *da, double *dx, long *incx)
+int lbfgsb_rb_dscal_(long *n, double *da, double *dx, long *incx)
 {
   long i__1, i__2;
   static long i__, m, mp1, nincx;

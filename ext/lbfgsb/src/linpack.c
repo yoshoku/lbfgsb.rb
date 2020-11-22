@@ -44,7 +44,7 @@ static long c__1 = 1;
  *     linpack.  this version dated 08/14/78 .
  *     cleve moler, university of new mexico, argonne national lab.
  */
-int dpofa_(double *a, long *lda, long *n, long *info)
+int lbfgsb_rb_dpofa_(double *a, long *lda, long *n, long *info)
 {
   long a_dim1, a_offset, i__1, i__2, i__3;
   static long j, k;
@@ -66,7 +66,7 @@ int dpofa_(double *a, long *lda, long *n, long *info)
 	  i__2 = jm1;
 	  for (k = 1; k <= i__2; ++k) {
 	    i__3 = k - 1;
-	    t = a[k + j * a_dim1] - ddot_(&i__3, &a[k * a_dim1 + 1], &c__1, &a[j * a_dim1 + 1], &c__1);
+	    t = a[k + j * a_dim1] - lbfgsb_rb_ddot_(&i__3, &a[k * a_dim1 + 1], &c__1, &a[j * a_dim1 + 1], &c__1);
 	    t /= a[k + k * a_dim1];
 	    a[k + j * a_dim1] = t;
 	    s += t * t;
@@ -133,7 +133,7 @@ L40:
  *     linpack. this version dated 08/14/78 .
  *     g. w. stewart, university of maryland, argonne national lab.
  */
-int dtrsl_(double *t, long *ldt, long *n, double *b, long *job, long *info)
+int lbfgsb_rb_dtrsl_(double *t, long *ldt, long *n, double *b, long *job, long *info)
 {
   long t_dim1, t_offset, i__1, i__2;
   static long j, jj, case__;
@@ -179,7 +179,7 @@ L20:
   for (j = 2; j <= i__1; ++j) {
 	  temp = -b[j - 1];
 	  i__2 = *n - j + 1;
-	  daxpy_(&i__2, &temp, &t[j + (j - 1) * t_dim1], &c__1, &b[j], &c__1);
+	  lbfgsb_rb_daxpy_(&i__2, &temp, &t[j + (j - 1) * t_dim1], &c__1, &b[j], &c__1);
 	  b[j] /= t[j + j * t_dim1];
   }
 L40:
@@ -195,7 +195,7 @@ L50:
   for (jj = 2; jj <= i__1; ++jj) {
 	  j = *n - jj + 1;
 	  temp = -b[j + 1];
-	  daxpy_(&j, &temp, &t[(j + 1) * t_dim1 + 1], &c__1, &b[1], &c__1);
+	  lbfgsb_rb_daxpy_(&j, &temp, &t[(j + 1) * t_dim1 + 1], &c__1, &b[1], &c__1);
 	  b[j] /= t[j + j * t_dim1];
   }
 L70:
@@ -211,7 +211,7 @@ L80:
   for (jj = 2; jj <= i__1; ++jj) {
 	  j = *n - jj + 1;
 	  i__2 = jj - 1;
-	  b[j] -= ddot_(&i__2, &t[j + 1 + j * t_dim1], &c__1, &b[j + 1], &c__1);
+	  b[j] -= lbfgsb_rb_ddot_(&i__2, &t[j + 1 + j * t_dim1], &c__1, &b[j + 1], &c__1);
 	  b[j] /= t[j + j * t_dim1];
   }
 L100:
@@ -226,7 +226,7 @@ L110:
   i__1 = *n;
   for (j = 2; j <= i__1; ++j) {
 	  i__2 = j - 1;
-	  b[j] -= ddot_(&i__2, &t[j * t_dim1 + 1], &c__1, &b[1], &c__1);
+	  b[j] -= lbfgsb_rb_ddot_(&i__2, &t[j * t_dim1 + 1], &c__1, &b[1], &c__1);
 	  b[j] /= t[j + j * t_dim1];
   }
 L130:
