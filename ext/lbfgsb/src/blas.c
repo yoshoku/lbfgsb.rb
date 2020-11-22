@@ -5,36 +5,6 @@
  */
 #include "blas.h"
 
-double dnrm2_(long *n, double *x, long *incx)
-{
-  long i__1, i__2;
-  double ret_val, d__1, d__2, d__3;
-  static long i__;
-  static double scale;
-
-  --x;
-
-  ret_val = 0.;
-  scale = 0.;
-  i__1 = *n;
-  i__2 = *incx;
-  for (i__ = 1; i__2 < 0 ? i__ >= i__1 : i__ <= i__1; i__ += i__2) {
-    d__2 = scale, d__3 = (d__1 = x[i__], fabs(d__1));
-    scale = d__2 >= d__3 ? d__2 : d__3;
-  }
-  if (scale == 0.) {
-    return ret_val;
-  }
-  i__2 = *n;
-  i__1 = *incx;
-  for (i__ = 1; i__1 < 0 ? i__ >= i__2 : i__ <= i__2; i__ += i__1) {
-    d__1 = x[i__] / scale;
-    ret_val += d__1 * d__1;
-  }
-  ret_val = scale * sqrt(ret_val);
-  return ret_val;
-}
-
 int daxpy_(long *n, double *da, double *dx, long *incx, double *dy, long *incy)
 {
   long i__1;

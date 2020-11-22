@@ -3,7 +3,6 @@
 
 #include <math.h>
 
-extern double dnrm2_(long *n, double *x, long *incx);
 extern int daxpy_(long *n, double *da, double *dx, long *incx, double *dy, long *incy);
 extern int dcopy_(long *n, double *dx, long *incx, double *dy, long *incy);
 extern double ddot_(long *n, double *dx, long *incx, double *dy, long *incy);
