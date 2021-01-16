@@ -158,6 +158,11 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   rb_hash_aset(ret, ID2SYM(rb_intern("n_jev")), LONG2NUM(n_jev));
   rb_hash_aset(ret, ID2SYM(rb_intern("success")), strncmp(task, "CONV", 4) == 0 ? Qtrue : Qfalse);
 
+  RB_GC_GUARD(x_val);
+  RB_GC_GUARD(l_val);
+  RB_GC_GUARD(u_val);
+  RB_GC_GUARD(nbd_val);
+
   return ret;
 }
 
