@@ -1,3 +1,6 @@
+## 0.3.1
+- Add GC guard to narray given to native extension method.
+
 ## 0.3.0
 - Add library name prefix to functions derived from blas and linpack
 to avoid errors due to collision with the blas functions called by numo-linalg.
