@@ -2,6 +2,7 @@
 #define LBFGSB_RB_H 1
 
 #include <float.h>
+#include <string.h>
 
 #include <ruby.h>
 #include <numo/narray.h>

@@ -8,7 +8,6 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   VALUE l_val, VALUE u_val, VALUE nbd_val,
   VALUE maxcor, VALUE ftol, VALUE gtol, VALUE maxiter, VALUE disp)
 {
-  long i;
   long n_iter;
   long n_fev;
   long n_jev;
@@ -19,12 +18,12 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   narray_t* nbd_nary;
   long n;
   long m = NUM2LONG(maxcor);
-  double *x_ptr;
-  double *l_ptr;
-  double *u_ptr;
-  long *nbd_ptr;
+  double* x_ptr;
+  double* l_ptr;
+  double* u_ptr;
+  long* nbd_ptr;
   double f;
-  double *g;
+  double* g;
   double factr = NUM2DBL(ftol);
   double pgtol = NUM2DBL(gtol);
   double* wa;
@@ -35,7 +34,6 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   long lsave[4];
   long isave[44];
   double dsave[29];
-  double* g_ptr;
   VALUE g_val;
   VALUE fg_arr;
   VALUE ret;
@@ -111,7 +109,7 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
 
   g_val = Qnil;
   f = 0.0;
-  for (i = 0; i < n; g[i++] = 0.0);
+  memset(g, 0, n * sizeof(*g));
   strcpy(task, "START");
   n_fev = 0;
   n_jev = 0;
@@ -130,15 +128,14 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
         f = NUM2DBL(rb_funcall(self, rb_intern("fnc"), 3, fnc, x_val, args));
         g_val = rb_funcall(self, rb_intern("jcb"), 3, jcb, x_val, args);
       }
-      n_fev += 1;
-      n_jev += 1;
+      n_fev++;
+      n_jev++;
       if (CLASS_OF(g_val) != numo_cDFloat) g_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, g_val);
       if (!RTEST(nary_check_contiguous(g_val))) g_val = nary_dup(g_val);
-      g_ptr = (double*)na_get_pointer_for_read(g_val);
-      for (i = 0; i < n; i++) g[i] = g_ptr[i];
+      memcpy(g, na_get_pointer_for_read(g_val), n * sizeof(*g));
+      RB_GC_GUARD(g_val);
     } else if (strncmp(task, "NEW_X", 5) == 0) {
-      n_iter += 1;
-      continue;
+      n_iter++;
     } else {
       break;
     }
