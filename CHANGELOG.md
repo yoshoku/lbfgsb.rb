@@ -1,3 +1,7 @@
+## 0.3.2
+- Refactor native extension codes.
+- Update documentations.
+
 ## 0.3.1
 - Add GC guard to narray given to native extension method.
 
