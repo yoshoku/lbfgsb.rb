@@ -6,14 +6,17 @@ Gem::Specification.new do |spec|
   spec.authors       = ['yoshoku']
   spec.email         = ['yoshoku@outlook.com']
 
-  spec.summary       = 'Lbfgsb.rb is a Ruby binding for L-BFGS-B'
-  spec.description   = 'Lbfgsb.rb is a Ruby binding for L-BFGS-B'
+  spec.summary       = 'Lbfgsb.rb is a Ruby binding for L-BFGS-B.'
+  spec.description   = <<~MSG
+    Lbfgsb.rb is a Ruby binding for L-BFGS-B that is a limited-memory algorithm for
+    solving large nonlinear optimization problems subject to simple bounds on the variables.
+  MSG
   spec.homepage      = 'https://github.com/yoshoku/lbfgsb.rb'
   spec.license       = 'BSD-3-Clause'
 
-  spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/yoshoku/lbfgsb.rb'
-  spec.metadata['changelog_uri'] = 'https://github.com/yoshoku/lbfgsb.rb/blob/main/CHANGELOG.md'
+  spec.metadata['homepage_uri']      = spec.homepage
+  spec.metadata['source_code_uri']   = 'https://github.com/yoshoku/lbfgsb.rb'
+  spec.metadata['changelog_uri']     = 'https://github.com/yoshoku/lbfgsb.rb/blob/main/CHANGELOG.md'
   spec.metadata['documentation_uri'] = 'https://yoshoku.github.io/lbfgsb.rb/doc/'
 
   # Specify which files should be added to the gem when it is released.
