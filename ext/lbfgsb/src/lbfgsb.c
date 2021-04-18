@@ -44,9 +44,9 @@
  *                        March  2011
  */
 
+#include "lbfgsb.h"
 #include "blas.h"
 #include "linpack.h"
-#include "lbfgsb.h"
 
 static double c_b9 = 0.;
 static long c__1 = 1;
@@ -232,12 +232,8 @@ static double c_b282 = .1;
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int setulb_(long *n, long *m, double *x,
-  double *l, double *u, long *nbd, double *f, double *g,
-  double *factr, double *pgtol, double *wa, long *iwa,
-  char *task, long *iprint, char *csave, long *lsave,
-  long *isave, double *dsave)
-{
+int setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double* f, double* g, double* factr, double* pgtol,
+            double* wa, long* iwa, char* task, long* iprint, char* csave, long* lsave, long* isave, double* dsave) {
   long i__1;
 
   static long ld, lr, lt, lz, lwa, lwn, lss, lxp, lws, lwt, lsy, lwy, lsnd;
@@ -287,11 +283,9 @@ int setulb_(long *n, long *m, double *x,
   lt = isave[14];
   lxp = isave[15];
   lwa = isave[16];
-  mainlb_(n, m, &x[1], &l[1], &u[1], &nbd[1], f, &g[1], factr, pgtol, &wa[lws],
-          &wa[lwy], &wa[lsy], &wa[lss], &wa[lwt], &wa[lwn], &wa[lsnd],
-          &wa[lz], &wa[lr], &wa[ld], &wa[lt], &wa[lxp], &wa[lwa], &iwa[1],
-          &iwa[*n + 1], &iwa[(*n << 1) + 1], task, iprint, csave, &lsave[1],
-          &isave[22], &dsave[1]);
+  mainlb_(n, m, &x[1], &l[1], &u[1], &nbd[1], f, &g[1], factr, pgtol, &wa[lws], &wa[lwy], &wa[lsy], &wa[lss], &wa[lwt],
+          &wa[lwn], &wa[lsnd], &wa[lz], &wa[lr], &wa[ld], &wa[lt], &wa[lxp], &wa[lwa], &iwa[1], &iwa[*n + 1],
+          &iwa[(*n << 1) + 1], task, iprint, csave, &lsave[1], &isave[22], &dsave[1]);
   return 0;
 }
 
@@ -471,20 +465,14 @@ int setulb_(long *n, long *m, double *x,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int mainlb_(long *n, long *m, double *x,
-  double *l, double *u, long *nbd, double *f, double *g,
-  double *factr, double *pgtol, double *ws, double *wy,
-  double *sy, double *ss, double *wt, double *wn,
-  double *snd, double *z__, double *r__, double *d__,
-  double *t, double *xp, double *wa, long *index,
-  long *iwhere, long *indx2, char *task, long *iprint,
-  char *csave, long *lsave, long *isave, double *dsave)
-{
-  long ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset,
-    ss_dim1, ss_offset, wt_dim1, wt_offset, wn_dim1, wn_offset,
-    snd_dim1, snd_offset, i__1;
+int mainlb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double* f, double* g, double* factr, double* pgtol,
+            double* ws, double* wy, double* sy, double* ss, double* wt, double* wn, double* snd, double* z__, double* r__,
+            double* d__, double* t, double* xp, double* wa, long* index, long* iwhere, long* indx2, char* task, long* iprint,
+            char* csave, long* lsave, long* isave, double* dsave) {
+  long ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, wt_dim1, wt_offset, wn_dim1, wn_offset,
+      snd_dim1, snd_offset, i__1;
   double d__1, d__2;
-  FILE *itfptr;
+  FILE* itfptr;
   static long i__, k;
   static double gd, dr, rr, dtd;
   static long col;
@@ -610,9 +598,8 @@ int mainlb_(long *n, long *m, double *x,
     /* Check the input arguments for errors. */
     errclb_(n, m, factr, &l[1], &u[1], &nbd[1], task, &info, &k);
     if (strncmp(task, "ERROR", 5) == 0) {
-      prn3lb_(n, &x[1], f, task, iprint, &info, &itfile, &iter, &nfgv, &nintol,
-          &nskip, &nact, &sbgnrm, &c_b9, &nseg, word, &iback,
-          &stp, &xstep, &k, &cachyt, &sbtime, &lnscht);
+      prn3lb_(n, &x[1], f, task, iprint, &info, &itfile, &iter, &nfgv, &nintol, &nskip, &nact, &sbgnrm, &c_b9, &nseg, word,
+              &iback, &stp, &xstep, &k, &cachyt, &sbtime, &lnscht);
       return 0;
     }
     prn1lb_(n, m, &l[1], &u[1], &x[1], iprint, &itfile, &epsmch);
@@ -707,7 +694,7 @@ L222:
   }
   iword = -1;
 
-  if (! cnstnd && col > 0) {
+  if (!cnstnd && col > 0) {
     /* skip the search for GCP. */
     lbfgsb_rb_dcopy_(n, &x[1], &c__1, &z__[1], &c__1);
     wrk = updatd;
@@ -718,10 +705,9 @@ L222:
    * Compute the Generalized Cauchy Point (GCP).
    */
   timer_(&cpu1);
-  cauchy_(n, &x[1], &l[1], &u[1], &nbd[1], &g[1], &indx2[1], &iwhere[1], &t[1],
-      &d__[1], &z__[1], m, &wy[wy_offset], &ws[ws_offset], &sy[sy_offset],
-      &wt[wt_offset], &theta, &col, &head, &wa[1], &wa[(*m << 1) + 1],
-      &wa[(*m << 2) + 1], &wa[*m * 6 + 1], &nseg, iprint, &sbgnrm, &info, &epsmch);
+  cauchy_(n, &x[1], &l[1], &u[1], &nbd[1], &g[1], &indx2[1], &iwhere[1], &t[1], &d__[1], &z__[1], m, &wy[wy_offset],
+          &ws[ws_offset], &sy[sy_offset], &wt[wt_offset], &theta, &col, &head, &wa[1], &wa[(*m << 1) + 1], &wa[(*m << 2) + 1],
+          &wa[*m * 6 + 1], &nseg, iprint, &sbgnrm, &info, &epsmch);
   if (info != 0) {
     /* singular triangular system detected; refresh the lbfgs memory. */
     if (*iprint >= 1) {
@@ -762,9 +748,8 @@ L333:
   /*   where     E = [-I  0] */
   /*                 [ 0  I] */
   if (wrk) {
-    formk_(n, &nfree, &index[1], &nenter, &ileave, &indx2[1], &iupdat, &updatd,
-        &wn[wn_offset], &snd[snd_offset], m, &ws[ws_offset], &wy[wy_offset],
-        &sy[sy_offset], &theta, &col, &head, &info);
+    formk_(n, &nfree, &index[1], &nenter, &ileave, &indx2[1], &iupdat, &updatd, &wn[wn_offset], &snd[snd_offset], m,
+           &ws[ws_offset], &wy[wy_offset], &sy[sy_offset], &theta, &col, &head, &info);
   }
   if (info != 0) {
     /* nonpositive definiteness in Cholesky factorization; */
@@ -786,16 +771,14 @@ L333:
   }
   /* compute r=-Z'B(xcp-xk)-Z'g (using wa(2m+1)=W'(xcp-x) */
   /*                                            from 'cauchy'). */
-  cmprlb_(n, m, &x[1], &g[1], &ws[ws_offset], &wy[wy_offset], &sy[sy_offset],
-      &wt[wt_offset], &z__[1], &r__[1], &wa[1], &index[1], &theta, &col,
-      &head, &nfree, &cnstnd, &info);
+  cmprlb_(n, m, &x[1], &g[1], &ws[ws_offset], &wy[wy_offset], &sy[sy_offset], &wt[wt_offset], &z__[1], &r__[1], &wa[1],
+          &index[1], &theta, &col, &head, &nfree, &cnstnd, &info);
   if (info != 0) {
     goto L444;
   }
   /* jlm-jn call the direct method. */
-  subsm_(n, m, &nfree, &index[1], &l[1], &u[1], &nbd[1], &z__[1], &r__[1], &xp[1],
-      &ws[ws_offset], &wy[wy_offset], &theta, &x[1], &g[1], &col,
-      &head, &iword, &wa[1], &wn[wn_offset], iprint, &info);
+  subsm_(n, m, &nfree, &index[1], &l[1], &u[1], &nbd[1], &z__[1], &r__[1], &xp[1], &ws[ws_offset], &wy[wy_offset], &theta,
+         &x[1], &g[1], &col, &head, &iword, &wa[1], &wn[wn_offset], iprint, &info);
 L444:
   if (info != 0) {
     /* singular triangular system detected; */
@@ -828,10 +811,8 @@ L555:
   }
   timer_(&cpu1);
 L666:
-  lnsrlb_(n, &l[1], &u[1], &nbd[1], &x[1], f, &fold, &gd, &gdold, &g[1],
-      &d__[1], &r__[1], &t[1], &z__[1], &stp, &dnorm, &dtd, &xstep,
-      &stpmx, &iter, &ifun, &iback, &nfgv, &info, task, &boxed, &cnstnd,
-      csave, &isave[22], &dsave[17]);
+  lnsrlb_(n, &l[1], &u[1], &nbd[1], &x[1], f, &fold, &gd, &gdold, &g[1], &d__[1], &r__[1], &t[1], &z__[1], &stp, &dnorm, &dtd,
+          &xstep, &stpmx, &iter, &ifun, &iback, &nfgv, &info, task, &boxed, &cnstnd, csave, &isave[22], &dsave[17]);
   if (info != 0 || iback >= 20) {
     /* restore the previous iterate. */
     lbfgsb_rb_dcopy_(n, &t[1], &c__1, &x[1], &c__1);
@@ -881,8 +862,7 @@ L666:
     /* Compute the infinity norm of the projected (-)gradient. */
     projgr_(n, &l[1], &u[1], &nbd[1], &x[1], &g[1], &sbgnrm);
     /* Print iteration information. */
-    prn2lb_(n, &x[1], f, &g[1], iprint, &itfile, &iter, &nfgv, &nact,
-        &sbgnrm, &nseg, word, &iword, &iback, &stp, &xstep);
+    prn2lb_(n, &x[1], f, &g[1], iprint, &itfile, &iter, &nfgv, &nact, &sbgnrm, &nseg, word, &iword, &iback, &stp, &xstep);
     goto L1000;
   }
 L777:
@@ -934,9 +914,8 @@ L777:
   updatd = TRUE_;
   ++iupdat;
   /* Update matrices WS and WY and form the middle matrix in B. */
-  matupd_(n, m, &ws[ws_offset], &wy[wy_offset], &sy[sy_offset],
-      &ss[ss_offset], &d__[1], &r__[1], &itail, &iupdat, &col, &head,
-      &theta, &rr, &dr, &stp, &dtd);
+  matupd_(n, m, &ws[ws_offset], &wy[wy_offset], &sy[sy_offset], &ss[ss_offset], &d__[1], &r__[1], &itail, &iupdat, &col, &head,
+          &theta, &rr, &dr, &stp, &dtd);
   /* Form the upper half of the pds T = theta*SS + L*D^(-1)*L'; */
   /*    Store T in the upper triangular of the array wt; */
   /*    Cholesky factorize T to J*J' with */
@@ -967,9 +946,8 @@ L888:
 L999:
   timer_(&time2);
   time = time2 - time1;
-  prn3lb_(n, &x[1], f, task, iprint, &info, &itfile, &iter, &nfgv, &nintol,
-    &nskip, &nact, &sbgnrm, &time, &nseg, word, &iback, &stp, &xstep,
-    &k, &cachyt, &sbtime, &lnscht);
+  prn3lb_(n, &x[1], f, task, iprint, &info, &itfile, &iter, &nfgv, &nintol, &nskip, &nact, &sbgnrm, &time, &nseg, word, &iback,
+          &stp, &xstep, &k, &cachyt, &sbtime, &lnscht);
 L1000:
   /* Save local variables. */
   lsave[1] = prjctd;
@@ -1035,10 +1013,8 @@ L1000:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int active_(long *n, double *l, double *u,
-  long *nbd, double *x, long *iwhere, long *iprint,
-  long *prjctd, long *cnstnd, long *boxed)
-{
+int active_(long* n, double* l, double* u, long* nbd, double* x, long* iwhere, long* iprint, long* prjctd, long* cnstnd,
+            long* boxed) {
   long i__1;
   static long i__, nbdd;
   --iwhere;
@@ -1080,7 +1056,7 @@ int active_(long *n, double *l, double *u,
     if (nbd[i__] == 0) {
       /* this variable is always free */
       iwhere[i__] = -1;
-    /* otherwise set x(i)=mid(x(i), u(i), l(i)). */
+      /* otherwise set x(i)=mid(x(i), u(i), l(i)). */
     } else {
       *cnstnd = TRUE_;
       if (nbd[i__] == 2 && u[i__] - l[i__] <= 0.) {
@@ -1095,7 +1071,7 @@ int active_(long *n, double *l, double *u,
     if (*prjctd) {
       fprintf(stdout, " The initial X is infeasible.  Restart with its projection.\n");
     }
-    if (! (*cnstnd)) {
+    if (!(*cnstnd)) {
       fprintf(stdout, " This problem is unconstrained.\n");
     }
   }
@@ -1159,9 +1135,7 @@ int active_(long *n, double *l, double *u,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int bmv_(long *m, double *sy, double *wt, long
-  *col, double *v, double *p, long *info)
-{
+int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long* info) {
   long sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
   static long i__, k, i2;
   static double sum;
@@ -1400,14 +1374,10 @@ int bmv_(long *m, double *sy, double *wt, long
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int cauchy_(long *n, double *x, double *l,
-  double *u, long *nbd, double *g, long *iorder, long *iwhere,
-  double *t, double *d__, double *xcp, long *m,
-  double *wy, double *ws, double *sy, double *wt,
-  double *theta, long *col, long *head, double *p,
-  double *c__, double *wbp, double *v, long *nseg,
-  long *iprint, double *sbgnrm, long *info, double *epsmch)
-{
+int cauchy_(long* n, double* x, double* l, double* u, long* nbd, double* g, long* iorder, long* iwhere, double* t, double* d__,
+            double* xcp, long* m, double* wy, double* ws, double* sy, double* wt, double* theta, long* col, long* head,
+            double* p, double* c__, double* wbp, double* v, long* nseg, long* iprint, double* sbgnrm, long* info,
+            double* epsmch) {
   long wy_dim1, wy_offset, ws_dim1, ws_offset, sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
   double d__1;
   static long i__, j;
@@ -1782,12 +1752,8 @@ L999:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int cmprlb_(long *n, long *m, double *x,
-  double *g, double *ws, double *wy, double *sy,
-  double *wt, double *z__, double *r__, double *wa,
-  long *index, double *theta, long *col, long *head,
-  long *nfree, long *cnstnd, long *info)
-{
+int cmprlb_(long* n, long* m, double* x, double* g, double* ws, double* wy, double* sy, double* wt, double* z__, double* r__,
+            double* wa, long* index, double* theta, long* col, long* head, long* nfree, long* cnstnd, long* info) {
   long ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
   static long i__, j, k;
   static double a1, a2;
@@ -1812,7 +1778,7 @@ int cmprlb_(long *n, long *m, double *x,
   ws_offset = 1 + ws_dim1;
   ws -= ws_offset;
 
-  if (! (*cnstnd) && *col > 0) {
+  if (!(*cnstnd) && *col > 0) {
     i__1 = *n;
     for (i__ = 1; i__ <= i__1; ++i__) {
       r__[i__] = -g[i__];
@@ -1858,9 +1824,7 @@ int cmprlb_(long *n, long *m, double *x,
  *                       Ciyou Zhu
  *    in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int errclb_(long *n, long *m, double *factr,
-  double *l, double *u, long *nbd, char *task, long *info, long *k)
-{
+int errclb_(long* n, long* m, double* factr, double* l, double* u, long* nbd, char* task, long* info, long* k) {
   long i__1;
   static long i__;
   --nbd;
@@ -2017,14 +1981,9 @@ int errclb_(long *n, long *m, double *factr,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int formk_(long *n, long *nsub, long *ind, long *nenter,
-  long *ileave, long *indx2, long *iupdat, long *updatd,
-  double *wn, double *wn1, long *m, double *ws,
-  double *wy, double *sy, double *theta, long *col,
-  long *head, long *info)
-{
-  long wn_dim1, wn_offset, wn1_dim1, wn1_offset, ws_dim1, ws_offset,
-    wy_dim1, wy_offset, sy_dim1, sy_offset, i__1, i__2, i__3;
+int formk_(long* n, long* nsub, long* ind, long* nenter, long* ileave, long* indx2, long* iupdat, long* updatd, double* wn,
+           double* wn1, long* m, double* ws, double* wy, double* sy, double* theta, long* col, long* head, long* info) {
+  long wn_dim1, wn_offset, wn1_dim1, wn1_offset, ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, i__1, i__2, i__3;
   static long i__, k, k1, m2, is, js, iy, jy, is1, js1, col2, dend, pend;
   static long upcl;
   static double temp1, temp2, temp3, temp4;
@@ -2265,9 +2224,7 @@ int formk_(long *n, long *nsub, long *ind, long *nenter,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int formt_(long *m, double *wt, double *sy,
-  double *ss, long *col, double *theta, long *info)
-{
+int formt_(long* m, double* wt, double* sy, double* ss, long* col, double* theta, long* info) {
   long wt_dim1, wt_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, i__1, i__2, i__3;
   static long i__, j, k, k1;
   static double ddum;
@@ -2343,11 +2300,8 @@ int formt_(long *m, double *wt, double *sy,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int freev_(long *n, long *nfree, long *index,
-  long *nenter, long *ileave, long *indx2, long *iwhere,
-  long *wrk, long *updatd, long *cnstnd, long *iprint,
-  long *iter)
-{
+int freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long* indx2, long* iwhere, long* wrk, long* updatd,
+           long* cnstnd, long* iprint, long* iter) {
   long i__1;
   static long i__, k, iact;
 
@@ -2385,7 +2339,7 @@ int freev_(long *n, long *nfree, long *index,
     }
     if (*iprint >= 99) {
       i__1 = *n + 1 - *ileave;
-      fprintf(stdout,  " %2ld variables leave; %2ld variables enter\n", i__1, *nenter);
+      fprintf(stdout, " %2ld variables leave; %2ld variables enter\n", i__1, *nenter);
     }
   }
   *wrk = *ileave < *n + 1 || *nenter > 0 || *updatd;
@@ -2448,8 +2402,7 @@ int freev_(long *n, long *nfree, long *index,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int hpsolb_(long *n, double *t, long *iorder, long *iheap)
-{
+int hpsolb_(long* n, double* t, long* iorder, long* iheap) {
   long i__1;
   static long i__, j, k;
   static double out, ddum;
@@ -2466,7 +2419,7 @@ int hpsolb_(long *n, double *t, long *iorder, long *iheap)
       indxin = iorder[k];
       /* Add ddum to the heap. */
       i__ = k;
-L10:
+    L10:
       if (i__ > 1) {
         j = i__ / 2;
         if (ddum < t[j]) {
@@ -2490,7 +2443,7 @@ L10:
     ddum = t[*n];
     indxin = iorder[*n];
     /* Restore the heap */
-L30:
+  L30:
     j = i__ + i__;
     if (j <= *n - 1) {
       if (t[j + 1] < t[j]) {
@@ -2534,15 +2487,10 @@ L30:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int lnsrlb_(long *n, double *l, double *u,
-  long *nbd, double *x, double *f, double *fold,
-  double *gd, double *gdold, double *g, double *d__,
-  double *r__, double *t, double *z__, double *stp,
-  double *dnorm, double *dtd, double *xstep, double *stpmx,
-  long *iter, long *ifun, long *iback, long *nfgv,
-  long *info, char *task, long *boxed, long *cnstnd,
-  char *csave, long *isave, double *dsave)
-{
+int lnsrlb_(long* n, double* l, double* u, long* nbd, double* x, double* f, double* fold, double* gd, double* gdold, double* g,
+            double* d__, double* r__, double* t, double* z__, double* stp, double* dnorm, double* dtd, double* xstep,
+            double* stpmx, long* iter, long* ifun, long* iback, long* nfgv, long* info, char* task, long* boxed, long* cnstnd,
+            char* csave, long* isave, double* dsave) {
   long i__1;
   double d__1;
   static long i__;
@@ -2594,7 +2542,7 @@ int lnsrlb_(long *n, double *l, double *u,
       }
     }
   }
-  if (*iter == 0 && ! (*boxed)) {
+  if (*iter == 0 && !(*boxed)) {
     d__1 = 1. / *dnorm;
     *stp = d__1 <= *stpmx ? d__1 : *stpmx;
   } else {
@@ -2658,12 +2606,8 @@ L556:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int matupd_(long *n, long *m, double *ws,
-  double *wy, double *sy, double *ss, double *d__,
-  double *r__, long *itail, long *iupdat, long *col,
-  long *head, double *theta, double *rr, double *dr,
-  double *stp, double *dtd)
-{
+int matupd_(long* n, long* m, double* ws, double* wy, double* sy, double* ss, double* d__, double* r__, long* itail,
+            long* iupdat, long* col, long* head, double* theta, double* rr, double* dr, double* stp, double* dtd) {
   long ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, i__1, i__2;
   static long j;
   static long pointr;
@@ -2743,12 +2687,9 @@ int matupd_(long *n, long *m, double *ws,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int prn1lb_(long *n, long *m, double *l,
-  double *u, double *x, long *iprint, long *itfile,
-  double *epsmch)
-{
+int prn1lb_(long* n, long* m, double* l, double* u, double* x, long* iprint, long* itfile, double* epsmch) {
   long i__1;
-  FILE *itfptr;
+  FILE* itfptr;
   static long i__;
 
   --x;
@@ -2840,14 +2781,11 @@ int prn1lb_(long *n, long *m, double *l,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int prn2lb_(long *n, double *x, double *f,
-  double *g, long *iprint, long *itfile, long *iter,
-  long *nfgv, long *nact, double *sbgnrm, long *nseg, char*word,
-  long *iword, long *iback, double *stp, double *xstep)
-{
+int prn2lb_(long* n, double* x, double* f, double* g, long* iprint, long* itfile, long* iter, long* nfgv, long* nact,
+            double* sbgnrm, long* nseg, char* word, long* iword, long* iback, double* stp, double* xstep) {
   long i__1;
   static long i__, imod;
-  FILE *itfptr;
+  FILE* itfptr;
   --g;
   --x;
 
@@ -2890,8 +2828,8 @@ int prn2lb_(long *n, double *x, double *f,
   }
   if (*iprint >= 1) {
     itfptr = fopen("iterate.dat", "a");
-    fprintf(itfptr, " %4ld %4ld %5ld %5ld  %3s %4ld  %7.1E  %7.1E %10.3E %10.3E\n",
-        *iter, *nfgv, *nseg, *nact, word, *iback, *stp, *xstep, *sbgnrm, *f);
+    fprintf(itfptr, " %4ld %4ld %5ld %5ld  %3s %4ld  %7.1E  %7.1E %10.3E %10.3E\n", *iter, *nfgv, *nseg, *nact, word, *iback,
+            *stp, *xstep, *sbgnrm, *f);
     fclose(itfptr);
   }
   return 0;
@@ -2913,15 +2851,11 @@ int prn2lb_(long *n, double *x, double *f,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int prn3lb_(long *n, double *x, double *f, char *task,
-  long *iprint, long *info, long *itfile, long *iter,
-  long *nfgv, long *nintol, long *nskip, long *nact,
-  double *sbgnrm, double *time, long *nseg, char *word,
-  long *iback, double *stp, double *xstep, long *k,
-  double *cachyt, double *sbtime, double *lnscht)
-{
+int prn3lb_(long* n, double* x, double* f, char* task, long* iprint, long* info, long* itfile, long* iter, long* nfgv,
+            long* nintol, long* nskip, long* nact, double* sbgnrm, double* time, long* nseg, char* word, long* iback,
+            double* stp, double* xstep, long* k, double* cachyt, double* sbtime, double* lnscht) {
   long i__1;
-  FILE *itfptr;
+  FILE* itfptr;
   static long i__;
 
   --x;
@@ -3023,8 +2957,8 @@ L999:
     if (*iprint >= 1) {
       itfptr = fopen("iterate.dat", "a");
       if (*info == -4 || *info == -9) {
-        fprintf(itfptr, " %4ld %4ld %5ld %5ld  %3s %4ld  %7.1E  %7.1E      -          -\n",
-            *iter, *nfgv, *nseg, *nact, word, *iback, *stp, *xstep);
+        fprintf(itfptr, " %4ld %4ld %5ld %5ld  %3s %4ld  %7.1E  %7.1E      -          -\n", *iter, *nfgv, *nseg, *nact, word,
+                *iback, *stp, *xstep);
       }
       fprintf(itfptr, "\n");
       fprintf(itfptr, "%s\n", task);
@@ -3090,9 +3024,7 @@ L999:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-int projgr_(long *n, double *l, double *u,
-  long *nbd, double *x, double *g, double *sbgnrm)
-{
+int projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, double* sbgnrm) {
   long i__1;
   double d__1, d__2;
   static long i__;
@@ -3299,13 +3231,9 @@ int projgr_(long *n, double *l, double *u,
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal
  */
-int subsm_(long *n, long *m, long *nsub, long *ind,
-  double *l, double *u, long *nbd, double *x,
-  double *d__, double *xp, double *ws, double *wy,
-  double *theta, double *xx, double *gg, long *col,
-  long *head, long *iword, double *wv, double *wn,
-  long *iprint, long *info)
-{
+int subsm_(long* n, long* m, long* nsub, long* ind, double* l, double* u, long* nbd, double* x, double* d__, double* xp,
+           double* ws, double* wy, double* theta, double* xx, double* gg, long* col, long* head, long* iword, double* wv,
+           double* wn, long* iprint, long* info) {
   long ws_dim1, ws_offset, wy_dim1, wy_offset, wn_dim1, wn_offset, i__1, i__2;
   double d__1, d__2;
   static long i__, j, k, m2;
@@ -3381,8 +3309,7 @@ int subsm_(long *n, long *m, long *nsub, long *ind,
     i__2 = *nsub;
     for (i__ = 1; i__ <= i__2; ++i__) {
       k = ind[i__];
-      d__[i__] = d__[i__] + wy[k + pointr * wy_dim1] * wv[jy] / *theta
-        + ws[k + pointr * ws_dim1] * wv[js];
+      d__[i__] = d__[i__] + wy[k + pointr * wy_dim1] * wv[jy] / *theta + ws[k + pointr * ws_dim1] * wv[js];
     }
     pointr = pointr % *m + 1;
   }
@@ -3637,11 +3564,8 @@ L911:
  *     Argonne National Laboratory and University of Minnesota.
  *     Brett M. Averick, Richard G. Carter, and Jorge J. More'.
  */
-int dcsrch_(double *f, double *g, double *stp,
-  double *ftol, double *gtol, double *xtol,
-  double *stpmin, double *stpmax,
-  char *task, long *isave, double *dsave)
-{
+int dcsrch_(double* f, double* g, double* stp, double* ftol, double* gtol, double* xtol, double* stpmin, double* stpmax,
+            char* task, long* isave, double* dsave) {
 
   double d__1;
   static double fm, gm, fx, fy, gx, gy, fxm, fym, gxm, gym, stx, sty;
@@ -3917,11 +3841,8 @@ L1000:
  *     Argonne National Laboratory and University of Minnesota.
  *     Brett M. Averick and Jorge J. More'.
  */
-int dcstep_(double *stx, double *fx, double *dx,
-  double *sty, double *fy, double *dy, double *stp,
-  double *fp, double *dp, long *brackt, double *stpmin,
-  double *stpmax)
-{
+int dcstep_(double* stx, double* fx, double* dx, double* sty, double* fy, double* dy, double* stp, double* fp, double* dp,
+            long* brackt, double* stpmin, double* stpmax) {
   double d__1, d__2, d__3;
   static double p, q, r__, s, sgnd, stpc, stpf, stpq, gamma, theta;
 
@@ -3953,10 +3874,10 @@ int dcstep_(double *stx, double *fx, double *dx,
       stpf = stpc + (stpq - stpc) / 2.;
     }
     *brackt = TRUE_;
-  /* Second case: A lower function value and derivatives of opposite */
-  /* sign. The minimum is bracketed. If the cubic step is farther from */
-  /* stp than the secant step, the cubic step is taken, otherwise the */
-  /* secant step is taken. */
+    /* Second case: A lower function value and derivatives of opposite */
+    /* sign. The minimum is bracketed. If the cubic step is farther from */
+    /* stp than the secant step, the cubic step is taken, otherwise the */
+    /* secant step is taken. */
   } else if (sgnd < 0.) {
     theta = (*fx - *fp) * 3. / (*stp - *stx) + *dx + *dp;
     d__1 = fabs(theta);
@@ -3980,8 +3901,8 @@ int dcstep_(double *stx, double *fx, double *dx,
       stpf = stpq;
     }
     *brackt = TRUE_;
-  /* Third case: A lower function value, derivatives of the same sign, */
-  /* and the magnitude of the derivative decreases. */
+    /* Third case: A lower function value, derivatives of the same sign, */
+    /* and the magnitude of the derivative decreases. */
   } else if (fabs(*dp) < fabs(*dx)) {
     /* The cubic step is computed only if the cubic tends to infinity */
     /* in the direction of the step or if the minimum of the cubic */
@@ -4041,10 +3962,10 @@ int dcstep_(double *stx, double *fx, double *dx,
       stpf = *stpmax <= stpf ? *stpmax : stpf;
       stpf = *stpmin >= stpf ? *stpmin : stpf;
     }
-  /* Fourth case: A lower function value, derivatives of the same sign, */
-  /* and the magnitude of the derivative does not decrease. If the */
-  /* minimum is not bracketed, the step is either stpmin or stpmax, */
-  /* otherwise the cubic step is taken. */
+    /* Fourth case: A lower function value, derivatives of the same sign, */
+    /* and the magnitude of the derivative does not decrease. If the */
+    /* minimum is not bracketed, the step is either stpmin or stpmax, */
+    /* otherwise the cubic step is taken. */
   } else {
     if (*brackt) {
       theta = (*fp - *fy) * 3. / (*sty - *stp) + *dy + *dp;
@@ -4052,7 +3973,7 @@ int dcstep_(double *stx, double *fx, double *dx,
       d__2 = fabs(*dy);
       d__1 = d__1 >= d__2 ? d__1 : d__2;
       d__2 = fabs(*dp);
-      s = d__1 >= d__2 ? d__1: d__2;
+      s = d__1 >= d__2 ? d__1 : d__2;
       d__1 = theta / s;
       gamma = s * sqrt(d__1 * d__1 - *dy / s * (*dp / s));
       if (*stp > *sty) {
@@ -4089,8 +4010,7 @@ int dcstep_(double *stx, double *fx, double *dx,
   return 0;
 }
 
-int timer_(double *ttime)
-{
+int timer_(double* ttime) {
   *ttime = (double)clock() / CLOCKS_PER_SEC;
   return 0;
 }

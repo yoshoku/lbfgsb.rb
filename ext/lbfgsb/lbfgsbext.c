@@ -2,12 +2,8 @@
 
 VALUE rb_mLbfgsb;
 
-static
-VALUE lbfgsb_min_l_bfgs_b(VALUE self,
-  VALUE fnc, VALUE x_val, VALUE jcb, VALUE args,
-  VALUE l_val, VALUE u_val, VALUE nbd_val,
-  VALUE maxcor, VALUE ftol, VALUE gtol, VALUE maxiter, VALUE disp)
-{
+static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, VALUE args, VALUE l_val, VALUE u_val,
+                                 VALUE nbd_val, VALUE maxcor, VALUE ftol, VALUE gtol, VALUE maxiter, VALUE disp) {
   long n_iter;
   long n_fev;
   long n_jev;
@@ -115,10 +111,7 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   n_jev = 0;
 
   for (n_iter = 0; n_iter < max_iter;) {
-    setulb_(
-      &n, &m, x_ptr, l_ptr, u_ptr, nbd_ptr, &f, g, &factr, &pgtol, wa, iwa,
-      task, &iprint, csave, lsave, isave, dsave
-    );
+    setulb_(&n, &m, x_ptr, l_ptr, u_ptr, nbd_ptr, &f, g, &factr, &pgtol, wa, iwa, task, &iprint, csave, lsave, isave, dsave);
     if (strncmp(task, "FG", 2) == 0) {
       if (RB_TYPE_P(jcb, T_TRUE)) {
         fg_arr = rb_funcall(self, rb_intern("fnc"), 3, fnc, x_val, args);
@@ -130,8 +123,10 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
       }
       n_fev++;
       n_jev++;
-      if (CLASS_OF(g_val) != numo_cDFloat) g_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, g_val);
-      if (!RTEST(nary_check_contiguous(g_val))) g_val = nary_dup(g_val);
+      if (CLASS_OF(g_val) != numo_cDFloat)
+        g_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, g_val);
+      if (!RTEST(nary_check_contiguous(g_val)))
+        g_val = nary_dup(g_val);
       memcpy(g, na_get_pointer_for_read(g_val), n * sizeof(*g));
       RB_GC_GUARD(g_val);
     } else if (strncmp(task, "NEW_X", 5) == 0) {
@@ -163,9 +158,7 @@ VALUE lbfgsb_min_l_bfgs_b(VALUE self,
   return ret;
 }
 
-void
-Init_lbfgsbext(void)
-{
+void Init_lbfgsbext(void) {
   rb_mLbfgsb = rb_define_module("Lbfgsb");
   /* The value of double epsilon used in the native extension. */
   rb_define_const(rb_mLbfgsb, "DBL_EPSILON", DBL2NUM(DBL_EPSILON));

@@ -4,8 +4,8 @@
  *  Please read attached file License.txt
  */
 
-#include "blas.h"
 #include "linpack.h"
+#include "blas.h"
 
 static long c__1 = 1;
 
@@ -44,8 +44,7 @@ static long c__1 = 1;
  *     linpack.  this version dated 08/14/78 .
  *     cleve moler, university of new mexico, argonne national lab.
  */
-int lbfgsb_rb_dpofa_(double *a, long *lda, long *n, long *info)
-{
+int lbfgsb_rb_dpofa_(double* a, long* lda, long* n, long* info) {
   long a_dim1, a_offset, i__1, i__2, i__3;
   static long j, k;
   static double s, t;
@@ -57,27 +56,27 @@ int lbfgsb_rb_dpofa_(double *a, long *lda, long *n, long *info)
 
   i__1 = *n;
   for (j = 1; j <= i__1; ++j) {
-	  *info = j;
-	  s = 0.;
-	  jm1 = j - 1;
-	  if (jm1 < 1) {
-	    goto L20;
-	  }
-	  i__2 = jm1;
-	  for (k = 1; k <= i__2; ++k) {
-	    i__3 = k - 1;
-	    t = a[k + j * a_dim1] - lbfgsb_rb_ddot_(&i__3, &a[k * a_dim1 + 1], &c__1, &a[j * a_dim1 + 1], &c__1);
-	    t /= a[k + k * a_dim1];
-	    a[k + j * a_dim1] = t;
-	    s += t * t;
-	  }
-L20:
-	  s = a[j + j * a_dim1] - s;
+    *info = j;
+    s = 0.;
+    jm1 = j - 1;
+    if (jm1 < 1) {
+      goto L20;
+    }
+    i__2 = jm1;
+    for (k = 1; k <= i__2; ++k) {
+      i__3 = k - 1;
+      t = a[k + j * a_dim1] - lbfgsb_rb_ddot_(&i__3, &a[k * a_dim1 + 1], &c__1, &a[j * a_dim1 + 1], &c__1);
+      t /= a[k + k * a_dim1];
+      a[k + j * a_dim1] = t;
+      s += t * t;
+    }
+  L20:
+    s = a[j + j * a_dim1] - s;
     /* ......exit */
-	  if (s <= 0.) {
-	    goto L40;
-	  }
-	  a[j + j * a_dim1] = sqrt(s);
+    if (s <= 0.) {
+      goto L40;
+    }
+    a[j + j * a_dim1] = sqrt(s);
   }
   *info = 0;
 L40:
@@ -133,8 +132,7 @@ L40:
  *     linpack. this version dated 08/14/78 .
  *     g. w. stewart, university of maryland, argonne national lab.
  */
-int lbfgsb_rb_dtrsl_(double *t, long *ldt, long *n, double *b, long *job, long *info)
-{
+int lbfgsb_rb_dtrsl_(double* t, long* ldt, long* n, double* b, long* job, long* info) {
   long t_dim1, t_offset, i__1, i__2;
   static long j, jj, case__;
   static double temp;
@@ -148,39 +146,43 @@ int lbfgsb_rb_dtrsl_(double *t, long *ldt, long *n, double *b, long *job, long *
   i__1 = *n;
   for (*info = 1; *info <= i__1; ++(*info)) {
     /* ......exit */
-	  if (t[*info + *info * t_dim1] == 0.) {
-	    goto L150;
-	  }
+    if (t[*info + *info * t_dim1] == 0.) {
+      goto L150;
+    }
   }
   *info = 0;
 
   /* determine the task and go to it. */
   case__ = 1;
   if (*job % 10 != 0) {
-	  case__ = 2;
+    case__ = 2;
   }
   if (*job % 100 / 10 != 0) {
-	  case__ += 2;
+    case__ += 2;
   }
   switch (case__) {
-	  case 1: goto L20;
-	  case 2: goto L50;
-	  case 3: goto L80;
-	  case 4: goto L110;
+  case 1:
+    goto L20;
+  case 2:
+    goto L50;
+  case 3:
+    goto L80;
+  case 4:
+    goto L110;
   }
 
   /* solve t*x=b for t lower triangular */
 L20:
   b[1] /= t[t_dim1 + 1];
   if (*n < 2) {
-	  goto L40;
+    goto L40;
   }
   i__1 = *n;
   for (j = 2; j <= i__1; ++j) {
-	  temp = -b[j - 1];
-	  i__2 = *n - j + 1;
-	  lbfgsb_rb_daxpy_(&i__2, &temp, &t[j + (j - 1) * t_dim1], &c__1, &b[j], &c__1);
-	  b[j] /= t[j + j * t_dim1];
+    temp = -b[j - 1];
+    i__2 = *n - j + 1;
+    lbfgsb_rb_daxpy_(&i__2, &temp, &t[j + (j - 1) * t_dim1], &c__1, &b[j], &c__1);
+    b[j] /= t[j + j * t_dim1];
   }
 L40:
   goto L140;
@@ -189,14 +191,14 @@ L40:
 L50:
   b[*n] /= t[*n + *n * t_dim1];
   if (*n < 2) {
-	  goto L70;
+    goto L70;
   }
   i__1 = *n;
   for (jj = 2; jj <= i__1; ++jj) {
-	  j = *n - jj + 1;
-	  temp = -b[j + 1];
-	  lbfgsb_rb_daxpy_(&j, &temp, &t[(j + 1) * t_dim1 + 1], &c__1, &b[1], &c__1);
-	  b[j] /= t[j + j * t_dim1];
+    j = *n - jj + 1;
+    temp = -b[j + 1];
+    lbfgsb_rb_daxpy_(&j, &temp, &t[(j + 1) * t_dim1 + 1], &c__1, &b[1], &c__1);
+    b[j] /= t[j + j * t_dim1];
   }
 L70:
   goto L140;
@@ -205,14 +207,14 @@ L70:
 L80:
   b[*n] /= t[*n + *n * t_dim1];
   if (*n < 2) {
-	  goto L100;
+    goto L100;
   }
   i__1 = *n;
   for (jj = 2; jj <= i__1; ++jj) {
-	  j = *n - jj + 1;
-	  i__2 = jj - 1;
-	  b[j] -= lbfgsb_rb_ddot_(&i__2, &t[j + 1 + j * t_dim1], &c__1, &b[j + 1], &c__1);
-	  b[j] /= t[j + j * t_dim1];
+    j = *n - jj + 1;
+    i__2 = jj - 1;
+    b[j] -= lbfgsb_rb_ddot_(&i__2, &t[j + 1 + j * t_dim1], &c__1, &b[j + 1], &c__1);
+    b[j] /= t[j + j * t_dim1];
   }
 L100:
   goto L140;
@@ -221,13 +223,13 @@ L100:
 L110:
   b[1] /= t[t_dim1 + 1];
   if (*n < 2) {
-	  goto L130;
+    goto L130;
   }
   i__1 = *n;
   for (j = 2; j <= i__1; ++j) {
-	  i__2 = j - 1;
-	  b[j] -= lbfgsb_rb_ddot_(&i__2, &t[j * t_dim1 + 1], &c__1, &b[1], &c__1);
-	  b[j] /= t[j + j * t_dim1];
+    i__2 = j - 1;
+    b[j] -= lbfgsb_rb_ddot_(&i__2, &t[j * t_dim1 + 1], &c__1, &b[1], &c__1);
+    b[j] /= t[j + j * t_dim1];
   }
 L130:
 L140:
