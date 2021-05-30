@@ -1,0 +1,11 @@
+module Numo
+  class NArray
+    def self.zeros: (*untyped) -> untyped
+    def size: () -> Integer
+  end
+
+  class DFloat < NArray
+    def []: (*untyped) -> untyped
+    def []=: (*untyped) -> untyped
+  end
+end
