@@ -1,3 +1,6 @@
+## 0.4.0
+- Add type declaration file: sig/lbfgsb.rbs
+
 ## 0.3.2
 - Refactor native extension codes.
 - Update documentations.

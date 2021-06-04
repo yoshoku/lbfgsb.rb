@@ -3,5 +3,5 @@
 # Lbfgsb.rb is a Ruby binding for L-BFGS-B with Numo::NArray.
 module Lbfgsb
   # The version of Lbfgsb.rb you are using.
-  VERSION = '0.3.2'
+  VERSION = '0.4.0'
 end
