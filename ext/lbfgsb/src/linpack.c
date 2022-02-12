@@ -44,7 +44,7 @@ static long c__1 = 1;
  *     linpack.  this version dated 08/14/78 .
  *     cleve moler, university of new mexico, argonne national lab.
  */
-int lbfgsb_rb_dpofa_(double* a, long* lda, long* n, long* info) {
+void lbfgsb_rb_dpofa_(double* a, long* lda, long* n, long* info) {
   long a_dim1, a_offset, i__1, i__2, i__3;
   static long j, k;
   static double s, t;
@@ -80,7 +80,7 @@ int lbfgsb_rb_dpofa_(double* a, long* lda, long* n, long* info) {
   }
   *info = 0;
 L40:
-  return 0;
+  return;
 }
 
 /**
@@ -132,7 +132,7 @@ L40:
  *     linpack. this version dated 08/14/78 .
  *     g. w. stewart, university of maryland, argonne national lab.
  */
-int lbfgsb_rb_dtrsl_(double* t, long* ldt, long* n, double* b, long* job, long* info) {
+void lbfgsb_rb_dtrsl_(double* t, long* ldt, long* n, double* b, long* job, long* info) {
   long t_dim1, t_offset, i__1, i__2;
   static long j, jj, case__;
   static double temp;
@@ -234,5 +234,5 @@ L110:
 L130:
 L140:
 L150:
-  return 0;
+  return;
 }

@@ -5,7 +5,7 @@
  */
 #include "blas.h"
 
-int lbfgsb_rb_daxpy_(long* n, double* da, double* dx, long* incx, double* dy, long* incy) {
+void lbfgsb_rb_daxpy_(long* n, double* da, double* dx, long* incx, double* dy, long* incy) {
   long i__1;
   static long i__, m, ix, iy, mp1;
 
@@ -16,10 +16,10 @@ int lbfgsb_rb_daxpy_(long* n, double* da, double* dx, long* incx, double* dy, lo
   /* uses unrolled loops for increments equal to one. */
   /* jack dongarra, linpack, 3/11/78. */
   if (*n <= 0) {
-    return 0;
+    return;
   }
   if (*da == 0.) {
-    return 0;
+    return;
   }
   if (*incx == 1 && *incy == 1) {
     goto L20;
@@ -41,7 +41,7 @@ int lbfgsb_rb_daxpy_(long* n, double* da, double* dx, long* incx, double* dy, lo
     ix += *incx;
     iy += *incy;
   }
-  return 0;
+  return;
 
   /* code for both increments equal to 1 */
   /* clean-up loop */
@@ -55,7 +55,7 @@ L20:
     dy[i__] += *da * dx[i__];
   }
   if (*n < 4) {
-    return 0;
+    return;
   }
 L40:
   mp1 = m + 1;
@@ -66,10 +66,10 @@ L40:
     dy[i__ + 2] += *da * dx[i__ + 2];
     dy[i__ + 3] += *da * dx[i__ + 3];
   }
-  return 0;
+  return;
 }
 
-int lbfgsb_rb_dcopy_(long* n, double* dx, long* incx, double* dy, long* incy) {
+void lbfgsb_rb_dcopy_(long* n, double* dx, long* incx, double* dy, long* incy) {
   long i__1;
   static long i__, m, ix, iy, mp1;
 
@@ -80,7 +80,7 @@ int lbfgsb_rb_dcopy_(long* n, double* dx, long* incx, double* dy, long* incy) {
   /* uses unrolled loops for increments equal to one. */
   /* jack dongarra, linpack, 3/11/78. */
   if (*n <= 0) {
-    return 0;
+    return;
   }
   if (*incx == 1 && *incy == 1) {
     goto L20;
@@ -102,7 +102,7 @@ int lbfgsb_rb_dcopy_(long* n, double* dx, long* incx, double* dy, long* incy) {
     ix += *incx;
     iy += *incy;
   }
-  return 0;
+  return;
 
   /* code for both increments equal to 1 */
   /* clean-up loop */
@@ -116,7 +116,7 @@ L20:
     dy[i__] = dx[i__];
   }
   if (*n < 7) {
-    return 0;
+    return;
   }
 L40:
   mp1 = m + 1;
@@ -130,7 +130,7 @@ L40:
     dy[i__ + 5] = dx[i__ + 5];
     dy[i__ + 6] = dx[i__ + 6];
   }
-  return 0;
+  return;
 }
 
 double lbfgsb_rb_ddot_(long* n, double* dx, long* incx, double* dy, long* incy) {
@@ -199,7 +199,7 @@ L60:
   return ret_val;
 }
 
-int lbfgsb_rb_dscal_(long* n, double* da, double* dx, long* incx) {
+void lbfgsb_rb_dscal_(long* n, double* da, double* dx, long* incx) {
   long i__1, i__2;
   static long i__, m, mp1, nincx;
 
@@ -210,7 +210,7 @@ int lbfgsb_rb_dscal_(long* n, double* da, double* dx, long* incx) {
   /* jack dongarra, linpack, 3/11/78. */
   /* modified 3/93 to return if incx .le. 0. */
   if (*n <= 0 || *incx <= 0) {
-    return 0;
+    return;
   }
   if (*incx == 1) {
     goto L20;
@@ -223,7 +223,7 @@ int lbfgsb_rb_dscal_(long* n, double* da, double* dx, long* incx) {
   for (i__ = 1; i__2 < 0 ? i__ >= i__1 : i__ <= i__1; i__ += i__2) {
     dx[i__] = *da * dx[i__];
   }
-  return 0;
+  return;
 
   /* code for increment equal to 1 */
   /* clean-up loop */
@@ -237,7 +237,7 @@ L20:
     dx[i__] = *da * dx[i__];
   }
   if (*n < 5) {
-    return 0;
+    return;
   }
 L40:
   mp1 = m + 1;
@@ -249,5 +249,5 @@ L40:
     dx[i__ + 3] = *da * dx[i__ + 3];
     dx[i__ + 4] = *da * dx[i__ + 4];
   }
-  return 0;
+  return;
 }
