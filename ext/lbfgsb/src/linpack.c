@@ -23,10 +23,10 @@ static long c__1 = 1;
  *                the symmetric matrix to be factored.  only the
  *                diagonal and upper triangle are used.
  *
- *        lda     long
+ *        lda     integer
  *                the leading dimension of the array  a .
  *
- *        n       long
+ *        n       integer
  *                the order of the matrix  a .
  *
  *     on return
@@ -36,7 +36,7 @@ static long c__1 = 1;
  *                the strict lower triangle is unaltered.
  *                if  info .ne. 0 , the factorization is not complete.
  *
- *        info    long
+ *        info    integer
  *                = 0  for normal return.
  *                = k  signals an error condition.  the leading minor
  *                     of order  k  is not positive definite.
@@ -101,16 +101,16 @@ L40:
  *                   the corresponding elements of the array can be
  *                   used to store other information.
  *
- *         ldt       long
+ *         ldt       integer
  *                   ldt is the leading dimension of the array t.
  *
- *         n         long
+ *         n         integer
  *                   n is the order of the system.
  *
  *         b         double precision(n).
  *                   b contains the right hand side of the system.
  *
- *         job       long
+ *         job       integer
  *                   job specifies what kind of system is to be solved.
  *                   if job is
  *
@@ -124,7 +124,7 @@ L40:
  *         b         b contains the solution, if info .eq. 0.
  *                   otherwise b is unaltered.
  *
- *         info      long
+ *         info      integer
  *                   info contains zero if the system is nonsingular.
  *                   otherwise info contains the index of
  *                   the first zero diagonal element of t.

@@ -63,11 +63,11 @@ static double c_b282 = .1;
  *       constrained optimization problem by calling mainlb.
  *       (The direct method will be used in the subspace minimization.)
  *
- *     n is an long variable.
+ *     n is an integer variable.
  *       On entry n is the dimension of the problem.
  *       On exit n is unchanged.
  *
- *     m is an long variable.
+ *     m is an integer variable.
  *       On entry m is the maximum number of variable metric corrections
  *         used to define the limited memory matrix.
  *       On exit m is unchanged.
@@ -84,7 +84,7 @@ static double c_b282 = .1;
  *       On entry u is the upper bound on x.
  *       On exit u is unchanged.
  *
- *     nbd is an long array of dimension n.
+ *     nbd is an integer array of dimension n.
  *       On entry nbd represents the type of bounds imposed on the
  *         variables, and must be specified as follows:
  *         nbd(i)=0 if x(i) is unbounded,
@@ -126,12 +126,12 @@ static double c_b282 = .1;
  *     wa is a double precision working array of length
  *       (2mmax + 5)nmax + 12mmax^2 + 12mmax.
  *
- *     iwa is an long working array of length 3nmax.
+ *     iwa is an integer working array of length 3nmax.
  *
  *     task is a working string of characters of length 60 indicating
  *       the current job when entering and quitting this subroutine.
  *
- *     iprint is an long variable that must be set by the user.
+ *     iprint is an integer variable that must be set by the user.
  *       It controls the frequency and type of output generated:
  *        iprint<0    no output is generated;
  *        iprint=0    print only one line at the last iteration;
@@ -153,7 +153,7 @@ static double c_b282 = .1;
  *         If lsave(3) = .true.  then  each variable has upper and lower
  *                                     bounds;
  *
- *     isave is an long working array of dimension 44.
+ *     isave is an integer working array of dimension 44.
  *       On exit with 'task' = NEW_X, the following information is
  *                                                             available:
  *         isave(22) = the total number of intervals explored in the
@@ -295,11 +295,11 @@ int setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double
  *     This subroutine solves bound constrained optimization problems by
  *       using the compact formula of the limited memory BFGS updates.
  *
- *     n is an long variable.
+ *     n is an integer variable.
  *       On entry n is the number of variables.
  *       On exit n is unchanged.
  *
- *     m is an long variable.
+ *     m is an integer variable.
  *       On entry m is the maximum number of variable metric
  *          corrections allowed in the limited memory matrix.
  *       On exit m is unchanged.
@@ -316,7 +316,7 @@ int setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double
  *       On entry u is the upper bound of x.
  *       On exit u is unchanged.
  *
- *     nbd is an long array of dimension n.
+ *     nbd is an integer array of dimension n.
  *       On entry nbd represents the type of bounds imposed on the
  *         variables, and must be specified as follows:
  *         nbd(i)=0 if x(i) is unbounded,
@@ -384,11 +384,11 @@ int setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double
  *
  *     sg(m),sgo(m),yg(m),ygo(m) are double precision working arrays.
  *
- *     index is an long working array of dimension n.
+ *     index is an integer working array of dimension n.
  *       In subroutine freev, index is used to store the free and fixed
  *          variables at the Generalized Cauchy Point (GCP).
  *
- *     iwhere is an long working array of dimension n used to record
+ *     iwhere is an integer working array of dimension n used to record
  *       the status of the vector x for GCP computation.
  *       iwhere(i)=0 or -3 if x(i) is free and has bounds,
  *                 1       if x(i) is fixed at l(i), and l(i) .ne. u(i)
@@ -396,7 +396,7 @@ int setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double
  *                 3       if x(i) is always fixed, i.e.,  u(i)=x(i)=l(i)
  *                -1       if x(i) is always free, i.e., no bounds on it.
  *
- *     indx2 is an long working array of dimension n.
+ *     indx2 is an integer working array of dimension n.
  *       Within subroutine cauchy, indx2 corresponds to the array iorder.
  *       In subroutine freev, a list of variables entering and leaving
  *       the free set is stored in indx2, and it is passed on to
@@ -405,7 +405,7 @@ int setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double
  *     task is a working string of characters of length 60 indicating
  *       the current job when entering and leaving this subroutine.
  *
- *     iprint is an long variable that must be set by the user.
+ *     iprint is an integer variable that must be set by the user.
  *       It controls the frequency and type of output generated:
  *        iprint<0    no output is generated;
  *        iprint=0    print only one line at the last iteration;
@@ -420,7 +420,7 @@ int setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double
  *
  *     lsave is a logical working array of dimension 4.
  *
- *     isave is an long working array of dimension 23.
+ *     isave is an integer working array of dimension 23.
  *
  *     dsave is a double precision working array of dimension 29.
  *
@@ -997,7 +997,7 @@ L1000:
  *     This subroutine initializes iwhere and projects the initial x to
  *       the feasible set if necessary.
  *
- *     iwhere is an long array of dimension n.
+ *     iwhere is an integer array of dimension n.
  *       On entry iwhere is unspecified.
  *       On exit iwhere(i)=-1  if x(i) has no bounds
  *                         3   if l(i)=u(i)
@@ -1089,7 +1089,7 @@ int active_(long* n, double* l, double* u, long* nbd, double* x, long* iwhere, l
  *       in the compact L-BFGS formula of B and a 2m vector v;
  *       it returns the product in p.
  *
- *     m is an long variable.
+ *     m is an integer variable.
  *       On entry m is the maximum number of variable metric corrections
  *         used to define the limited memory matrix.
  *       On exit m is unchanged.
@@ -1103,7 +1103,7 @@ int active_(long* n, double* l, double* u, long* nbd, double* x, long* iwhere, l
  *         the Cholesky factor of (thetaS'S+LD^(-1)L').
  *       On exit wt is unchanged.
  *
- *     col is an long variable.
+ *     col is an integer variable.
  *       On entry col specifies the number of s-vectors (or y-vectors)
  *         stored in the compact L-BFGS formula.
  *       On exit col is unchanged.
@@ -1116,7 +1116,7 @@ int active_(long* n, double* l, double* u, long* nbd, double* x, long* iwhere, l
  *       On entry p is unspecified.
  *       On exit p is the product Mv.
  *
- *     info is an long variable.
+ *     info is an integer variable.
  *       On entry info is unspecified.
  *       On exit info = 0       for normal return,
  *                    = nonzero for abnormal return when the system
@@ -1215,7 +1215,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *       along the projected gradient direction P(x-tg,l,u).
  *       The routine returns the GCP in xcp.
  *
- *     n is an long variable.
+ *     n is an integer variable.
  *       On entry n is the dimension of the problem.
  *       On exit n is unchanged.
  *
@@ -1231,7 +1231,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *       On entry u is the upper bound of x.
  *       On exit u is unchanged.
  *
- *     nbd is an long array of dimension n.
+ *     nbd is an integer array of dimension n.
  *       On entry nbd represents the type of bounds imposed on the
  *         variables, and must be specified as follows:
  *         nbd(i)=0 if x(i) is unbounded,
@@ -1244,7 +1244,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *       On entry g is the gradient of f(x).  g must be a nonzero vector.
  *       On exit g is unchanged.
  *
- *     iorder is an long working array of dimension n.
+ *     iorder is an integer working array of dimension n.
  *       iorder will be used to store the breakpoints in the piecewise
  *       linear path and free variables encountered. On exit,
  *         iorder(1),...,iorder(nleft) are indices of breakpoints
@@ -1254,7 +1254,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *         iorder(nfree),...,iorder(n) are indices of variables which
  *                 have no bound constraits along the search direction.
  *
- *     iwhere is an long array of dimension n.
+ *     iwhere is an integer array of dimension n.
  *       On entry iwhere indicates only the permanently fixed (iwhere=3)
  *       or free (iwhere= -1) components of x.
  *       On exit iwhere records the status of the current x variables.
@@ -1274,7 +1274,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *     xcp is a double precision array of dimension n used to return the
  *       GCP on exit.
  *
- *     m is an long variable.
+ *     m is an integer variable.
  *       On entry m is the maximum number of variable metric corrections
  *         used to define the limited memory matrix.
  *       On exit m is unchanged.
@@ -1293,12 +1293,12 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *       On entry theta is the scaling factor specifying B_0 = theta I.
  *       On exit theta is unchanged.
  *
- *     col is an long variable.
+ *     col is an integer variable.
  *       On entry col is the actual number of variable metric
  *         corrections stored so far.
  *       On exit col is unchanged.
  *
- *     head is an long variable.
+ *     head is an integer variable.
  *       On entry head is the location of the first s-vector (or y-vector)
  *         in S (or Y).
  *       On exit col is unchanged.
@@ -1315,7 +1315,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *
  *     v is a double precision working array of dimension 2m.
  *
- *     nseg is an long variable.
+ *     nseg is an integer variable.
  *       On exit nseg records the number of quadratic segments explored
  *         in searching for the GCP.
  *
@@ -1323,7 +1323,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *       On entry sg  and yg store S'g and Y'g correspondingly.
  *       On exit they are unchanged.
  *
- *     iprint is an long variable that must be set by the user.
+ *     iprint is an integer variable that must be set by the user.
  *       It controls the frequency and type of output generated:
  *        iprint<0    no output is generated;
  *        iprint=0    print only one line at the last iteration;
@@ -1338,7 +1338,7 @@ int bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long*
  *       On entry sbgnrm is the norm of the projected gradient at x.
  *       On exit sbgnrm is unchanged.
  *
- *     info is an long variable.
+ *     info is an integer variable.
  *       On entry info is 0.
  *       On exit info = 0       for normal return,
  *                    = nonzero for abnormal return when the the system
@@ -1875,35 +1875,35 @@ int errclb_(long* n, long* m, double* factr, double* l, double* u, long* nbd, ch
  *       occurring in section 5.1 of [1], as well as to the matrix
  *       Mbar^[-1] Nbar in section 5.3.
  *
- *     n is an long variable.
+ *     n is an integer variable.
  *       On entry n is the dimension of the problem.
  *       On exit n is unchanged.
  *
- *     nsub is an long variable
+ *     nsub is an integer variable
  *       On entry nsub is the number of subspace variables in free set.
  *       On exit nsub is not changed.
  *
- *     ind is an long array of dimension nsub.
+ *     ind is an integer array of dimension nsub.
  *       On entry ind specifies the indices of subspace variables.
  *       On exit ind is unchanged.
  *
- *     nenter is an long variable.
+ *     nenter is an integer variable.
  *       On entry nenter is the number of variables entering the
  *         free set.
  *       On exit nenter is unchanged.
  *
- *     ileave is an long variable.
+ *     ileave is an integer variable.
  *       On entry indx2(ileave),...,indx2(n) are the variables leaving
  *         the free set.
  *       On exit ileave is unchanged.
  *
- *     indx2 is an long array of dimension n.
+ *     indx2 is an integer array of dimension n.
  *       On entry indx2(1),...,indx2(nenter) are the variables entering
  *         the free set, while indx2(ileave),...,indx2(n) are the
  *         variables leaving the free set.
  *       On exit indx2 is unchanged.
  *
- *     iupdat is an long variable.
+ *     iupdat is an integer variable.
  *       On entry iupdat is the total number of BFGS updates made so far.
  *       On exit iupdat is unchanged.
  *
@@ -1927,15 +1927,15 @@ int errclb_(long* n, long* m, double* factr, double* l, double* u, long* nbd, ch
  *       The purpose of wn1 is just to store these inner products
  *       so they can be easily updated and inserted into wn.
  *
- *     m is an long variable.
+ *     m is an integer variable.
  *       On entry m is the maximum number of variable metric corrections
  *         used to define the limited memory matrix.
  *       On exit m is unchanged.
  *
  *     ws, wy, sy, and wtyy are double precision arrays;
  *     theta is a double precision variable;
- *     col is an long variable;
- *     head is an long variable.
+ *     col is an integer variable;
+ *     head is an integer variable.
  *       On entry they store the information defining the
  *                                          limited memory BFGS matrix:
  *         ws(n,m) stores S, a set of s-vectors;
@@ -1948,7 +1948,7 @@ int errclb_(long* n, long* m, double* factr, double* l, double* u, long* nbd, ch
  *         head is the location of the 1st s- (or y-) vector in S (or Y).
  *       On exit they are unchanged.
  *
- *     info is an long variable.
+ *     info is an integer variable.
  *       On entry info is unspecified.
  *       On exit info =  0 for normal return;
  *                    = -1 when the 1st Cholesky factorization failed;
@@ -2276,7 +2276,7 @@ int formt_(long* m, double* wt, double* sy, double* ss, long* col, double* theta
  *
  *     cnstnd is a logical variable indicating whether bounds are present
  *
- *     index is an long array of dimension n
+ *     index is an integer array of dimension n
  *       for i=1,...,nfree, index(i) are the indices of free variables
  *       for i=nfree+1,...,n, index(i) are the indices of bound variables
  *       On entry after the first iteration, index gives
@@ -2284,7 +2284,7 @@ int formt_(long* m, double* wt, double* sy, double* ss, long* col, double* theta
  *       On exit it gives the free variables based on the determination
  *         in cauchy using the array iwhere.
  *
- *     indx2 is an long array of dimension n
+ *     indx2 is an integer array of dimension n
  *       On entry indx2 is unspecified.
  *       On exit with iter>0, indx2 indicates which variables
  *          have changed status since the previous iteration.
@@ -2369,7 +2369,7 @@ int freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long* 
  *     This subroutine sorts out the least element of t, and puts the
  *       remaining elements of t in a heap.
  *
- *     n is an long variable.
+ *     n is an integer variable.
  *       On entry n is the dimension of the arrays t and iorder.
  *       On exit n is unchanged.
  *
@@ -2378,12 +2378,12 @@ int freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long* 
  *       On exit t(n) stores the least elements of t, and t(1) to t(n-1)
  *         stores the remaining elements in the form of a heap.
  *
- *     iorder is an long array of dimension n.
+ *     iorder is an integer array of dimension n.
  *       On entry iorder(i) is the index of t(i).
  *       On exit iorder(i) is still the index of t(i), but iorder may be
  *         permuted in accordance with t.
  *
- *     iheap is an long variable specifying the task.
+ *     iheap is an integer variable specifying the task.
  *       On entry iheap should be set as follows:
  *         iheap .eq. 0 if t(1) to t(n) is not in the form of a heap,
  *         iheap .ne. 0 if otherwise.
@@ -3110,20 +3110,20 @@ int projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, doub
  *     from that described in [1]. One can show that the matrix K is
  *     equal to the matrix M^[-1]N in that paper.
  *
- *     n is an long variable.
+ *     n is an integer variable.
  *       On entry n is the dimension of the problem.
  *       On exit n is unchanged.
  *
- *     m is an long variable.
+ *     m is an integer variable.
  *       On entry m is the maximum number of variable metric corrections
  *         used to define the limited memory matrix.
  *       On exit m is unchanged.
  *
- *     nsub is an long variable.
+ *     nsub is an integer variable.
  *       On entry nsub is the number of free variables.
  *       On exit nsub is unchanged.
  *
- *     ind is an long array of dimension nsub.
+ *     ind is an integer array of dimension nsub.
  *       On entry ind specifies the coordinate indices of free variables.
  *       On exit ind is unchanged.
  *
@@ -3135,7 +3135,7 @@ int projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, doub
  *       On entry u is the upper bound of x.
  *       On exit u is unchanged.
  *
- *     nbd is a long array of dimension n.
+ *     nbd is a integer array of dimension n.
  *       On entry nbd represents the type of bounds imposed on the
  *         variables, and must be specified as follows:
  *         nbd(i)=0 if x(i) is unbounded,
@@ -3165,8 +3165,8 @@ int projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, doub
  *
  *     ws and wy are double precision arrays;
  *     theta is a double precision variable;
- *     col is an long variable;
- *     head is an long variable.
+ *     col is an integer variable;
+ *     head is an integer variable.
  *       On entry they store the information defining the
  *                                          limited memory BFGS matrix:
  *         ws(n,m) stores S, a set of s-vectors;
@@ -3176,7 +3176,7 @@ int projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, doub
  *         head is the location of the 1st s- (or y-) vector in S (or Y).
  *       On exit they are unchanged.
  *
- *     iword is an long variable.
+ *     iword is an integer variable.
  *       On entry iword is unspecified.
  *       On exit iword specifies the status of the subspace solution.
  *         iword = 0 if the solution is in the box,
@@ -3194,7 +3194,7 @@ int projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, doub
  *                                                              [ 0  I]
  *       On exit wn is unchanged.
  *
- *     iprint is an long variable that must be set by the user.
+ *     iprint is an integer variable that must be set by the user.
  *       It controls the frequency and type of output generated:
  *        iprint<0    no output is generated;
  *        iprint=0    print only one line at the last iteration;
@@ -3205,7 +3205,7 @@ int projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, doub
  *       When iprint > 0, the file iterate.dat will be created to
  *                        summarize the iteration.
  *
- *     info is an long variable.
+ *     info is an integer variable.
  *       On entry info is unspecified.
  *       On exit info = 0       for normal return,
  *                    = nonzero for abnormal return
@@ -3548,7 +3548,7 @@ L911:
  *         On exit with convergence, a warning or an error, the
  *            variable task contains additional information.
  *
- *       isave is an long work array of dimension 2.
+ *       isave is an integer work array of dimension 2.
  *
  *       dsave is a double precision work array of dimension 13.
  *
