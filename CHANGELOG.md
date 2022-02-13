@@ -1,3 +1,19 @@
+## 0.5.0
+- Add build option to select FORTRAN integer bit size.
+
+```
+$ gem install lbfgsb -- --with-use-int64
+```
+
+- Add build option to use any blas library.
+
+```
+$ gem install lbfgsb -- --with-blas-dir=/opt/local/openblas/lib --with-blas-lib=openblas
+```
+
+- Change to use 32-bit integer for FORTRAN integer in internal functions by default.
+- Introduce conventional commits.
+
 ## 0.4.1
 - Remove dependent gem's type declaration file from installation files.
 
