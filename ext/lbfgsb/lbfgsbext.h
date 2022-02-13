@@ -9,6 +9,6 @@
 #include <numo/narray.h>
 #include <numo/template.h>
 
-#include <lbfgsb.h>
+#include "src/lbfgsb.h"
 
 #endif /* LBFGSB_RB_H */

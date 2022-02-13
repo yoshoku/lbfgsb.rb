@@ -28,10 +28,17 @@ if RUBY_PLATFORM =~ /mswin|cygwin|mingw/
   end
 end
 
-$srcs = Dir.glob("#{$srcdir}/*.c").map { |path| File.basename(path) }
-$srcs.concat(%w[blas.c linpack.c lbfgsb.c])
+$srcs = Dir.glob("#{$srcdir}/**/*.c").map { |path| File.basename(path) }
 
-$INCFLAGS << " -I$(srcdir)/src"
+blas_dir = with_config('blas-dir')
+$LDFLAGS = "-L#{blas_dir} #{$LDFLAGS}" unless blas_dir.nil?
+
+blas_lib = with_config('blas-lib')
+unless blas_lib.nil?
+  abort "#{blas_lib} not found." unless have_library(blas_lib)
+  $srcs.delete('blas.c')
+end
+
 $VPATH << "$(srcdir)/src"
 
 create_makefile('lbfgsb/lbfgsbext')
