@@ -3,7 +3,7 @@ name: build
 on: [push, pull_request]
 
 jobs:
-  build:
+  build_int32:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,3 +17,33 @@ jobs:
           bundler-cache: true
       - name: Build and test with Rake
         run: bundle exec rake
+  build_int64:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.6', '2.7', '3.0', '3.1' ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Build and test with Rake
+        run: bundle exec rake compile -- --with-use-int64 && bundle exec rspec
+  build_blas:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.6', '2.7', '3.0', '3.1' ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install BLAS
+        run: sudo apt-get install -y libopenblas-dev
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Build and test with Rake
+        run: bundle exec rake compile -- --with-blas-dir=/usr/lib/x86_64-linux-gnu/openblas-pthread --with-blas-lib=openblas && bundle exec rspec
