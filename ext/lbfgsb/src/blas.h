@@ -1,11 +1,11 @@
 #ifndef LBFGSB_RB_BLAS_H_
 #define LBFGSB_RB_BLAS_H_
 
-#include <math.h>
+#include "common.h"
 
-extern void lbfgsb_rb_daxpy_(long* n, double* da, double* dx, long* incx, double* dy, long* incy);
-extern void lbfgsb_rb_dcopy_(long* n, double* dx, long* incx, double* dy, long* incy);
-extern double lbfgsb_rb_ddot_(long* n, double* dx, long* incx, double* dy, long* incy);
-extern void lbfgsb_rb_dscal_(long* n, double* da, double* dx, long* incx);
+extern void lbfgsb_rb_daxpy_(F77_int* n, double* da, double* dx, F77_int* incx, double* dy, F77_int* incy);
+extern void lbfgsb_rb_dcopy_(F77_int* n, double* dx, F77_int* incx, double* dy, F77_int* incy);
+extern double lbfgsb_rb_ddot_(F77_int* n, double* dx, F77_int* incx, double* dy, F77_int* incy);
+extern void lbfgsb_rb_dscal_(F77_int* n, double* da, double* dx, F77_int* incx);
 
 #endif /* LBFGSB_RB_BLAS_H_ */

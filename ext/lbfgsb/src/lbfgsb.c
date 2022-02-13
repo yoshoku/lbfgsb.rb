@@ -43,14 +43,14 @@
  *
  *                        March  2011
  */
-
-#include "lbfgsb.h"
 #include "blas.h"
 #include "linpack.h"
 
+#include "lbfgsb.h"
+
 static double c_b9 = 0.;
-static long c__1 = 1;
-static long c__11 = 11;
+static F77_int c__1 = 1;
+static F77_int c__11 = 11;
 static double c_b280 = .001;
 static double c_b281 = .9;
 static double c_b282 = .1;
@@ -232,11 +232,11 @@ static double c_b282 = .1;
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double* f, double* g, double* factr, double* pgtol,
-            double* wa, long* iwa, char* task, long* iprint, char* csave, long* lsave, long* isave, double* dsave) {
-  long i__1;
+void setulb_(F77_int* n, F77_int* m, double* x, double* l, double* u, F77_int* nbd, double* f, double* g, double* factr, double* pgtol,
+            double* wa, F77_int* iwa, char* task, F77_int* iprint, char* csave, F77_int* lsave, F77_int* isave, double* dsave) {
+  F77_int i__1;
 
-  static long ld, lr, lt, lz, lwa, lwn, lss, lxp, lws, lwt, lsy, lwy, lsnd;
+  static F77_int ld, lr, lt, lz, lwa, lwn, lss, lxp, lws, lwt, lsy, lwy, lsnd;
 
   /* jlm-jn */
   --iwa;
@@ -464,51 +464,51 @@ void setulb_(long* n, long* m, double* x, double* l, double* u, long* nbd, doubl
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void mainlb_(long* n, long* m, double* x, double* l, double* u, long* nbd, double* f, double* g, double* factr, double* pgtol,
+void mainlb_(F77_int* n, F77_int* m, double* x, double* l, double* u, F77_int* nbd, double* f, double* g, double* factr, double* pgtol,
             double* ws, double* wy, double* sy, double* ss, double* wt, double* wn, double* snd, double* z__, double* r__,
-            double* d__, double* t, double* xp, double* wa, long* index, long* iwhere, long* indx2, char* task, long* iprint,
-            char* csave, long* lsave, long* isave, double* dsave) {
-  long ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, wt_dim1, wt_offset, wn_dim1, wn_offset,
+            double* d__, double* t, double* xp, double* wa, F77_int* index, F77_int* iwhere, F77_int* indx2, char* task, F77_int* iprint,
+            char* csave, F77_int* lsave, F77_int* isave, double* dsave) {
+  F77_int ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, wt_dim1, wt_offset, wn_dim1, wn_offset,
       snd_dim1, snd_offset, i__1;
   double d__1, d__2;
   FILE* itfptr;
-  static long i__, k;
+  static F77_int i__, k;
   static double gd, dr, rr, dtd;
-  static long col;
+  static F77_int col;
   static double tol;
-  static long wrk;
+  static F77_int wrk;
   static double stp, cpu1, cpu2;
-  static long head;
+  static F77_int head;
   static double fold;
-  static long nact;
+  static F77_int nact;
   static double ddum;
-  static long info, nseg;
+  static F77_int info, nseg;
   static double time;
-  static long nfgv, ifun, iter;
+  static F77_int nfgv, ifun, iter;
   static char word[4];
   static double time1, time2;
-  static long iback;
+  static F77_int iback;
   static double gdold;
-  static long nfree;
-  static long boxed;
-  static long itail;
+  static F77_int nfree;
+  static F77_int boxed;
+  static F77_int itail;
   static double theta;
   static double dnorm;
-  static long nskip, iword;
+  static F77_int nskip, iword;
   static double xstep, stpmx;
-  static long ileave;
+  static F77_int ileave;
   static double cachyt;
-  static long itfile;
+  static F77_int itfile;
   static double epsmch;
-  static long updatd;
+  static F77_int updatd;
   static double sbtime;
-  static long prjctd;
-  static long iupdat;
+  static F77_int prjctd;
+  static F77_int iupdat;
   static double sbgnrm;
-  static long cnstnd;
-  static long nenter;
+  static F77_int cnstnd;
+  static F77_int nenter;
   static double lnscht;
-  static long nintol;
+  static F77_int nintol;
 
   --indx2;
   --iwhere;
@@ -675,9 +675,9 @@ L111:
   /* Compute the infinity norm of the (-) projected gradient. */
   projgr_(n, &l[1], &u[1], &nbd[1], &x[1], &g[1], &sbgnrm);
   if (*iprint >= 1) {
-    fprintf(stdout, "\nAt iterate%5ld    f= %12.5E    |proj g|= %12.5E\n", iter, *f, sbgnrm);
+    fprintf(stdout, "\nAt iterate%5" PRIdF77INT "    f= %12.5E    |proj g|= %12.5E\n", iter, *f, sbgnrm);
     itfptr = fopen("iterate.dat", "a");
-    fprintf(itfptr, " %4ld %4ld     -     -   -     -     -        -    %10.3E %10.3E\n", iter, nfgv, sbgnrm, *f);
+    fprintf(itfptr, " %4" PRIdF77INT " %4" PRIdF77INT "     -     -   -     -     -        -    %10.3E %10.3E\n", iter, nfgv, sbgnrm, *f);
     fclose(itfptr);
   }
   if (sbgnrm <= *pgtol) {
@@ -689,7 +689,7 @@ L111:
 L222:
   if (*iprint >= 99) {
     i__1 = iter + 1;
-    fprintf(stdout, "\n\nITERATION %5ld\n", i__1);
+    fprintf(stdout, "\n\nITERATION %5" PRIdF77INT "\n", i__1);
   }
   iword = -1;
 
@@ -1011,10 +1011,10 @@ L1000:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void active_(long* n, double* l, double* u, long* nbd, double* x, long* iwhere, long* iprint, long* prjctd, long* cnstnd,
-            long* boxed) {
-  long i__1;
-  static long i__, nbdd;
+void active_(F77_int* n, double* l, double* u, F77_int* nbd, double* x, F77_int* iwhere, F77_int* iprint, F77_int* prjctd, F77_int* cnstnd,
+            F77_int* boxed) {
+  F77_int i__1;
+  static F77_int i__, nbdd;
   --iwhere;
   --x;
   --nbd;
@@ -1075,7 +1075,7 @@ void active_(long* n, double* l, double* u, long* nbd, double* x, long* iwhere, 
   }
   if (*iprint > 0) {
     fprintf(stdout, "\n");
-    fprintf(stdout, "At X0 %9ld variables are exactly at the bounds\n", nbdd);
+    fprintf(stdout, "At X0 %9" PRIdF77INT " variables are exactly at the bounds\n", nbdd);
   }
 }
 
@@ -1132,9 +1132,9 @@ void active_(long* n, double* l, double* u, long* nbd, double* x, long* iwhere, 
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long* info) {
-  long sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
-  static long i__, k, i2;
+void bmv_(F77_int* m, double* sy, double* wt, F77_int* col, double* v, double* p, F77_int* info) {
+  F77_int sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
+  static F77_int i__, k, i2;
   static double sum;
 
   wt_dim1 = *m;
@@ -1208,7 +1208,7 @@ void bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long
  *
  *                  Q(x + s) = g's + 1/2 s'Bs
  *
- *       along the projected gradient direction P(x-tg,l,u).
+ *       aF77_int the projected gradient direction P(x-tg,l,u).
  *       The routine returns the GCP in xcp.
  *
  *     n is an integer variable.
@@ -1248,7 +1248,7 @@ void bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long
  *         iorder(nleft+1),...,iorder(nbreak) are indices of
  *                                     encountered breakpoints; and
  *         iorder(nfree),...,iorder(n) are indices of variables which
- *                 have no bound constraits along the search direction.
+ *                 have no bound constraits aF77_int the search direction.
  *
  *     iwhere is an integer array of dimension n.
  *       On entry iwhere indicates only the permanently fixed (iwhere=3)
@@ -1370,30 +1370,30 @@ void bmv_(long* m, double* sy, double* wt, long* col, double* v, double* p, long
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void cauchy_(long* n, double* x, double* l, double* u, long* nbd, double* g, long* iorder, long* iwhere, double* t, double* d__,
-            double* xcp, long* m, double* wy, double* ws, double* sy, double* wt, double* theta, long* col, long* head,
-            double* p, double* c__, double* wbp, double* v, long* nseg, long* iprint, double* sbgnrm, long* info,
+void cauchy_(F77_int* n, double* x, double* l, double* u, F77_int* nbd, double* g, F77_int* iorder, F77_int* iwhere, double* t, double* d__,
+            double* xcp, F77_int* m, double* wy, double* ws, double* sy, double* wt, double* theta, F77_int* col, F77_int* head,
+            double* p, double* c__, double* wbp, double* v, F77_int* nseg, F77_int* iprint, double* sbgnrm, F77_int* info,
             double* epsmch) {
-  long wy_dim1, wy_offset, ws_dim1, ws_offset, sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
+  F77_int wy_dim1, wy_offset, ws_dim1, ws_offset, sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
   double d__1;
-  static long i__, j;
+  static F77_int i__, j;
   static double f1, f2, dt, tj, tl, tu, tj0;
-  static long ibp;
+  static F77_int ibp;
   static double dtm;
   static double wmc, wmp, wmw;
-  static long col2;
+  static F77_int col2;
   static double dibp;
-  static long iter;
+  static F77_int iter;
   static double zibp, tsum, dibp2;
-  static long bnded;
+  static F77_int bnded;
   static double neggi;
-  static long nfree;
+  static F77_int nfree;
   static double bkmin;
-  static long nleft;
+  static F77_int nleft;
   static double f2_org__;
-  static long nbreak, ibkmin;
-  static long pointr;
-  static long xlower, xupper;
+  static F77_int nbreak, ibkmin;
+  static F77_int pointr;
+  static F77_int xlower, xupper;
 
   --xcp;
   --d__;
@@ -1568,7 +1568,7 @@ void cauchy_(long* n, double* x, double* l, double* u, long* nbd, double* g, lon
   tsum = 0.;
   *nseg = 1;
   if (*iprint >= 99) {
-    fprintf(stdout, " There are %3ld  breakpoints \n", nbreak);
+    fprintf(stdout, " There are %3" PRIdF77INT "  breakpoints \n", nbreak);
   }
   /* If there are no breakpoints, locate the GCP and return. */
   if (nbreak == 0) {
@@ -1607,7 +1607,7 @@ L777:
   dt = tj - tj0;
   if (dt != 0. && *iprint >= 100) {
     fprintf(stdout, "\n");
-    fprintf(stdout, "Piece    %3ld --f1, f2 at start point  %11.4E %11.4E\n", *nseg, f1, f2);
+    fprintf(stdout, "Piece    %3" PRIdF77INT " --f1, f2 at start point  %11.4E %11.4E\n", *nseg, f1, f2);
     fprintf(stdout, "Distance to the next break point =  %11.4E\n", dt);
     fprintf(stdout, "Distance to the stationary point =  %11.4E\n", dtm);
   }
@@ -1632,7 +1632,7 @@ L777:
     iwhere[ibp] = 1;
   }
   if (*iprint >= 100) {
-    fprintf(stdout, " Variable   %ld  is fixed.\n", ibp);
+    fprintf(stdout, " Variable   %" PRIdF77INT "  is fixed.\n", ibp);
   }
   if (nleft == 0 && nbreak == *n) {
     /* all n variables are fixed, */
@@ -1694,7 +1694,7 @@ L888:
   if (*iprint >= 99) {
     fprintf(stdout, "\n");
     fprintf(stdout, " GCP found in this segment\n");
-    fprintf(stdout, "Piece    %3ld --f1, f2 at start point  %11.4E %11.4E\n", *nseg, f1, f2);
+    fprintf(stdout, "Piece    %3" PRIdF77INT " --f1, f2 at start point  %11.4E %11.4E\n", *nseg, f1, f2);
     fprintf(stdout, "Distance to the stationary point =  %11.4E\n", dtm);
   }
   if (dtm <= 0.) {
@@ -1747,12 +1747,12 @@ L999:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void cmprlb_(long* n, long* m, double* x, double* g, double* ws, double* wy, double* sy, double* wt, double* z__, double* r__,
-            double* wa, long* index, double* theta, long* col, long* head, long* nfree, long* cnstnd, long* info) {
-  long ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
-  static long i__, j, k;
+void cmprlb_(F77_int* n, F77_int* m, double* x, double* g, double* ws, double* wy, double* sy, double* wt, double* z__, double* r__,
+            double* wa, F77_int* index, double* theta, F77_int* col, F77_int* head, F77_int* nfree, F77_int* cnstnd, F77_int* info) {
+  F77_int ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, wt_dim1, wt_offset, i__1, i__2;
+  static F77_int i__, j, k;
   static double a1, a2;
-  static long pointr;
+  static F77_int pointr;
 
   --index;
   --r__;
@@ -1818,9 +1818,9 @@ void cmprlb_(long* n, long* m, double* x, double* g, double* ws, double* wy, dou
  *                       Ciyou Zhu
  *    in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void errclb_(long* n, long* m, double* factr, double* l, double* u, long* nbd, char* task, long* info, long* k) {
-  long i__1;
-  static long i__;
+void errclb_(F77_int* n, F77_int* m, double* factr, double* l, double* u, F77_int* nbd, char* task, F77_int* info, F77_int* k) {
+  F77_int i__1;
+  static F77_int i__;
   --nbd;
   --u;
   --l;
@@ -1974,13 +1974,13 @@ void errclb_(long* n, long* m, double* factr, double* l, double* u, long* nbd, c
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void formk_(long* n, long* nsub, long* ind, long* nenter, long* ileave, long* indx2, long* iupdat, long* updatd, double* wn,
-           double* wn1, long* m, double* ws, double* wy, double* sy, double* theta, long* col, long* head, long* info) {
-  long wn_dim1, wn_offset, wn1_dim1, wn1_offset, ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, i__1, i__2, i__3;
-  static long i__, k, k1, m2, is, js, iy, jy, is1, js1, col2, dend, pend;
-  static long upcl;
+void formk_(F77_int* n, F77_int* nsub, F77_int* ind, F77_int* nenter, F77_int* ileave, F77_int* indx2, F77_int* iupdat, F77_int* updatd, double* wn,
+           double* wn1, F77_int* m, double* ws, double* wy, double* sy, double* theta, F77_int* col, F77_int* head, F77_int* info) {
+  F77_int wn_dim1, wn_offset, wn1_dim1, wn1_offset, ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, i__1, i__2, i__3;
+  static F77_int i__, k, k1, m2, is, js, iy, jy, is1, js1, col2, dend, pend;
+  static F77_int upcl;
   static double temp1, temp2, temp3, temp4;
-  static long ipntr, jpntr, dbegin, pbegin;
+  static F77_int ipntr, jpntr, dbegin, pbegin;
 
   --indx2;
   --ind;
@@ -2215,9 +2215,9 @@ void formk_(long* n, long* nsub, long* ind, long* nenter, long* ileave, long* in
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void formt_(long* m, double* wt, double* sy, double* ss, long* col, double* theta, long* info) {
-  long wt_dim1, wt_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, i__1, i__2, i__3;
-  static long i__, j, k, k1;
+void formt_(F77_int* m, double* wt, double* sy, double* ss, F77_int* col, double* theta, F77_int* info) {
+  F77_int wt_dim1, wt_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, i__1, i__2, i__3;
+  static F77_int i__, j, k, k1;
   static double ddum;
 
   ss_dim1 = *m;
@@ -2290,10 +2290,10 @@ void formt_(long* m, double* wt, double* sy, double* ss, long* col, double* thet
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long* indx2, long* iwhere, long* wrk, long* updatd,
-           long* cnstnd, long* iprint, long* iter) {
-  long i__1;
-  static long i__, k, iact;
+void freev_(F77_int* n, F77_int* nfree, F77_int* index, F77_int* nenter, F77_int* ileave, F77_int* indx2, F77_int* iwhere, F77_int* wrk, F77_int* updatd,
+           F77_int* cnstnd, F77_int* iprint, F77_int* iter) {
+  F77_int i__1;
+  static F77_int i__, k, iact;
 
   --iwhere;
   --indx2;
@@ -2312,7 +2312,7 @@ void freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long*
         --(*ileave);
         indx2[*ileave] = k;
         if (*iprint >= 100) {
-          fprintf(stdout, " Variable %2ld leaves the set of free variables\n", k);
+          fprintf(stdout, " Variable %2" PRIdF77INT " leaves the set of free variables\n", k);
         }
       }
     }
@@ -2323,13 +2323,13 @@ void freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long*
         ++(*nenter);
         indx2[*nenter] = k;
         if (*iprint >= 100) {
-          fprintf(stdout, " Variable %2ld enters the set of free variables\n", k);
+          fprintf(stdout, " Variable %2" PRIdF77INT " enters the set of free variables\n", k);
         }
       }
     }
     if (*iprint >= 99) {
       i__1 = *n + 1 - *ileave;
-      fprintf(stdout, " %2ld variables leave; %2ld variables enter\n", i__1, *nenter);
+      fprintf(stdout, " %2" PRIdF77INT " variables leave; %2" PRIdF77INT " variables enter\n", i__1, *nenter);
     }
   }
   *wrk = *ileave < *n + 1 || *nenter > 0 || *updatd;
@@ -2348,7 +2348,7 @@ void freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long*
   }
   if (*iprint >= 99) {
     i__1 = *iter + 1;
-    fprintf(stdout, " %2ld variables are free at GCP %3ld\n", *nfree, i__1);
+    fprintf(stdout, " %2" PRIdF77INT " variables are free at GCP %3" PRIdF77INT "\n", *nfree, i__1);
   }
 }
 
@@ -2391,11 +2391,11 @@ void freev_(long* n, long* nfree, long* index, long* nenter, long* ileave, long*
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void hpsolb_(long* n, double* t, long* iorder, long* iheap) {
-  long i__1;
-  static long i__, j, k;
+void hpsolb_(F77_int* n, double* t, F77_int* iorder, F77_int* iheap) {
+  F77_int i__1;
+  static F77_int i__, j, k;
   static double out, ddum;
-  static long indxin, indxou;
+  static F77_int indxin, indxou;
 
   --iorder;
   --t;
@@ -2475,13 +2475,13 @@ void hpsolb_(long* n, double* t, long* iorder, long* iheap) {
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void lnsrlb_(long* n, double* l, double* u, long* nbd, double* x, double* f, double* fold, double* gd, double* gdold, double* g,
+void lnsrlb_(F77_int* n, double* l, double* u, F77_int* nbd, double* x, double* f, double* fold, double* gd, double* gdold, double* g,
             double* d__, double* r__, double* t, double* z__, double* stp, double* dnorm, double* dtd, double* xstep,
-            double* stpmx, long* iter, long* ifun, long* iback, long* nfgv, long* info, char* task, long* boxed, long* cnstnd,
-            char* csave, long* isave, double* dsave) {
-  long i__1;
+            double* stpmx, F77_int* iter, F77_int* ifun, F77_int* iback, F77_int* nfgv, F77_int* info, char* task, F77_int* boxed, F77_int* cnstnd,
+            char* csave, F77_int* isave, double* dsave) {
+  F77_int i__1;
   double d__1;
-  static long i__;
+  static F77_int i__;
   static double a1, a2;
 
   --z__;
@@ -2593,11 +2593,11 @@ L556:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void matupd_(long* n, long* m, double* ws, double* wy, double* sy, double* ss, double* d__, double* r__, long* itail,
-            long* iupdat, long* col, long* head, double* theta, double* rr, double* dr, double* stp, double* dtd) {
-  long ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, i__1, i__2;
-  static long j;
-  static long pointr;
+void matupd_(F77_int* n, F77_int* m, double* ws, double* wy, double* sy, double* ss, double* d__, double* r__, F77_int* itail,
+            F77_int* iupdat, F77_int* col, F77_int* head, double* theta, double* rr, double* dr, double* stp, double* dtd) {
+  F77_int ws_dim1, ws_offset, wy_dim1, wy_offset, sy_dim1, sy_offset, ss_dim1, ss_offset, i__1, i__2;
+  static F77_int j;
+  static F77_int pointr;
 
   --r__;
   --d__;
@@ -2673,10 +2673,10 @@ void matupd_(long* n, long* m, double* ws, double* wy, double* sy, double* ss, d
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void prn1lb_(long* n, long* m, double* l, double* u, double* x, long* iprint, long* itfile, double* epsmch) {
-  long i__1;
+void prn1lb_(F77_int* n, F77_int* m, double* l, double* u, double* x, F77_int* iprint, F77_int* itfile, double* epsmch) {
+  F77_int i__1;
   FILE* itfptr;
-  static long i__;
+  static F77_int i__;
 
   --x;
   --u;
@@ -2686,7 +2686,7 @@ void prn1lb_(long* n, long* m, double* l, double* u, double* x, long* iprint, lo
     fprintf(stdout, "RUNNING THE L-BFGS-B CODE\n\n");
     fprintf(stdout, "           * * *\n\n");
     fprintf(stdout, "Machine precision = %.3E\n", *epsmch);
-    fprintf(stdout, " N = %3ld    M = %2ld\n", *n, *m);
+    fprintf(stdout, " N = %3" PRIdF77INT "    M = %2" PRIdF77INT "\n", *n, *m);
     if (*iprint >= 1) {
       itfptr = fopen("iterate.dat", "w");
       fprintf(itfptr, "RUNNING THE L-BFGS-B CODE\n");
@@ -2705,7 +2705,7 @@ void prn1lb_(long* n, long* m, double* l, double* u, double* x, long* iprint, lo
       fprintf(itfptr, "\n");
       fprintf(itfptr, "           * * *\n\n");
       fprintf(itfptr, "Machine precision = %.3E\n", *epsmch);
-      fprintf(itfptr, " N = %3ld    M = %2ld\n", *n, *m);
+      fprintf(itfptr, " N = %3" PRIdF77INT "    M = %2" PRIdF77INT "\n", *n, *m);
       fprintf(itfptr, "\n");
       fprintf(itfptr, "   it   nf  nseg  nact  sub  itls  stepl    tstep     projg        f\n");
       fclose(itfptr);
@@ -2766,10 +2766,10 @@ void prn1lb_(long* n, long* m, double* l, double* u, double* x, long* iprint, lo
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void prn2lb_(long* n, double* x, double* f, double* g, long* iprint, long* itfile, long* iter, long* nfgv, long* nact,
-            double* sbgnrm, long* nseg, char* word, long* iword, long* iback, double* stp, double* xstep) {
-  long i__1;
-  static long i__, imod;
+void prn2lb_(F77_int* n, double* x, double* f, double* g, F77_int* iprint, F77_int* itfile, F77_int* iter, F77_int* nfgv, F77_int* nact,
+            double* sbgnrm, F77_int* nseg, char* word, F77_int* iword, F77_int* iback, double* stp, double* xstep) {
+  F77_int i__1;
+  static F77_int i__, imod;
   FILE* itfptr;
   --g;
   --x;
@@ -2788,8 +2788,8 @@ void prn2lb_(long* n, double* x, double* f, double* g, long* iprint, long* itfil
     strcpy(word, "---");
   }
   if (*iprint >= 99) {
-    fprintf(stdout, "LINE SEARCH %ld times; norm of step = %E\n", *iback, *xstep);
-    fprintf(stdout, "\nAt iterate%5ld    f= %12.5E    |proj g|= %12.5E\n", *iter, *f, *sbgnrm);
+    fprintf(stdout, "LINE SEARCH %" PRIdF77INT " times; norm of step = %E\n", *iback, *xstep);
+    fprintf(stdout, "\nAt iterate%5" PRIdF77INT"    f= %12.5E    |proj g|= %12.5E\n", *iter, *f, *sbgnrm);
 
     if (*iprint > 100) {
       fprintf(stdout, "X =");
@@ -2808,13 +2808,13 @@ void prn2lb_(long* n, double* x, double* f, double* g, long* iprint, long* itfil
   } else if (*iprint > 0) {
     imod = *iter % *iprint;
     if (imod == 0) {
-      fprintf(stdout, "\nAt iterate%5ld    f= %12.5E    |proj g|= %12.5E\n", *iter, *f, *sbgnrm);
+      fprintf(stdout, "\nAt iterate%5" PRIdF77INT "    f= %12.5E    |proj g|= %12.5E\n", *iter, *f, *sbgnrm);
     }
   }
   if (*iprint >= 1) {
     itfptr = fopen("iterate.dat", "a");
-    fprintf(itfptr, " %4ld %4ld %5ld %5ld  %3s %4ld  %7.1E  %7.1E %10.3E %10.3E\n", *iter, *nfgv, *nseg, *nact, word, *iback,
-            *stp, *xstep, *sbgnrm, *f);
+    fprintf(itfptr, " %4" PRIdF77INT " %4" PRIdF77INT " %5" PRIdF77INT " %5" PRIdF77INT "  %3s %4" PRIdF77INT "  %7.1E  %7.1E %10.3E %10.3E\n",
+        *iter, *nfgv, *nseg, *nact, word, *iback, *stp, *xstep, *sbgnrm, *f);
     fclose(itfptr);
   }
 }
@@ -2835,12 +2835,12 @@ void prn2lb_(long* n, double* x, double* f, double* g, long* iprint, long* itfil
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void prn3lb_(long* n, double* x, double* f, char* task, long* iprint, long* info, long* itfile, long* iter, long* nfgv,
-            long* nintol, long* nskip, long* nact, double* sbgnrm, double* time, long* nseg, char* word, long* iback,
-            double* stp, double* xstep, long* k, double* cachyt, double* sbtime, double* lnscht) {
-  long i__1;
+void prn3lb_(F77_int* n, double* x, double* f, char* task, F77_int* iprint, F77_int* info, F77_int* itfile, F77_int* iter, F77_int* nfgv,
+            F77_int* nintol, F77_int* nskip, F77_int* nact, double* sbgnrm, double* time, F77_int* nseg, char* word, F77_int* iback,
+            double* stp, double* xstep, F77_int* k, double* cachyt, double* sbtime, double* lnscht) {
+  F77_int i__1;
   FILE* itfptr;
-  static long i__;
+  static F77_int i__;
 
   --x;
 
@@ -2862,7 +2862,8 @@ void prn3lb_(long* n, double* x, double* f, char* task, long* iprint, long* info
     fprintf(stdout, "           * * *\n");
     fprintf(stdout, "\n");
     fprintf(stdout, "   N    Tit     Tnf  Tnint  Skip  Nact     Projg        F\n");
-    fprintf(stdout, "%5ld %6ld %6ld %6ld %5ld %5ld  %10.3E  %10.3E\n", *n, *iter, *nfgv, *nintol, *nskip, *nact, *sbgnrm, *f);
+    fprintf(stdout, "%5" PRIdF77INT " %6" PRIdF77INT " %6" PRIdF77INT " %6" PRIdF77INT " %5" PRIdF77INT " %5" PRIdF77INT "  %10.3E  %10.3E\n",
+        *n, *iter, *nfgv, *nintol, *nskip, *nact, *sbgnrm, *f);
     if (*iprint >= 100) {
       fprintf(stdout, "\n");
       fprintf(stdout, " X =");
@@ -2911,10 +2912,10 @@ L999:
         fprintf(stdout, "   may possibly be caused by a bad search direction.\n");
       }
       if (*info == -6) {
-        fprintf(stdout, "  Input nbd(%2ld) is invalid.\n", *k);
+        fprintf(stdout, "  Input nbd(%2" PRIdF77INT ") is invalid.\n", *k);
       }
       if (*info == -7) {
-        fprintf(stdout, "  l(%2ld) > u(%2ld).  No feasible solution.\n", *k, *k);
+        fprintf(stdout, "  l(%2" PRIdF77INT ") > u(%2" PRIdF77INT ").  No feasible solution.\n", *k, *k);
       }
       if (*info == -8) {
         fprintf(stdout, "\n");
@@ -2941,8 +2942,8 @@ L999:
     if (*iprint >= 1) {
       itfptr = fopen("iterate.dat", "a");
       if (*info == -4 || *info == -9) {
-        fprintf(itfptr, " %4ld %4ld %5ld %5ld  %3s %4ld  %7.1E  %7.1E      -          -\n", *iter, *nfgv, *nseg, *nact, word,
-                *iback, *stp, *xstep);
+        fprintf(itfptr, " %4" PRIdF77INT " %4" PRIdF77INT " %5" PRIdF77INT " %5" PRIdF77INT "  %3s %4" PRIdF77INT "  %7.1E  %7.1E      -          -\n",
+            *iter, *nfgv, *nseg, *nact, word, *iback, *stp, *xstep);
       }
       fprintf(itfptr, "\n");
       fprintf(itfptr, "%s\n", task);
@@ -3007,10 +3008,10 @@ L999:
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal.
  */
-void projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, double* sbgnrm) {
-  long i__1;
+void projgr_(F77_int* n, double* l, double* u, F77_int* nbd, double* x, double* g, double* sbgnrm) {
+  F77_int i__1;
   double d__1, d__2;
-  static long i__;
+  static F77_int i__;
   static double gi;
 
   --g;
@@ -3075,7 +3076,7 @@ void projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, dou
  *             subject to l<=x<=u
  *                       x_i=xcp_i for all i in A(xcp)
  *
- *       along the subspace unconstrained Newton direction
+ *       aF77_int the subspace unconstrained Newton direction
  *
  *          d = -(Z'BZ)^(-1) r.
  *
@@ -3213,18 +3214,18 @@ void projgr_(long* n, double* l, double* u, long* nbd, double* x, double* g, dou
  *                        Ciyou Zhu
  *     in collaboration with R.H. Byrd, P. Lu-Chen and J. Nocedal
  */
-void subsm_(long* n, long* m, long* nsub, long* ind, double* l, double* u, long* nbd, double* x, double* d__, double* xp,
-           double* ws, double* wy, double* theta, double* xx, double* gg, long* col, long* head, long* iword, double* wv,
-           double* wn, long* iprint, long* info) {
-  long ws_dim1, ws_offset, wy_dim1, wy_offset, wn_dim1, wn_offset, i__1, i__2;
+void subsm_(F77_int* n, F77_int* m, F77_int* nsub, F77_int* ind, double* l, double* u, F77_int* nbd, double* x, double* d__, double* xp,
+           double* ws, double* wy, double* theta, double* xx, double* gg, F77_int* col, F77_int* head, F77_int* iword, double* wv,
+           double* wn, F77_int* iprint, F77_int* info) {
+  F77_int ws_dim1, ws_offset, wy_dim1, wy_offset, wn_dim1, wn_offset, i__1, i__2;
   double d__1, d__2;
-  static long i__, j, k, m2;
+  static F77_int i__, j, k, m2;
   static double dk;
-  static long js, jy;
+  static F77_int js, jy;
   static double xk;
-  static long ibd, col2;
+  static F77_int ibd, col2;
   static double dd_p__, temp1, temp2, alpha;
-  static long pointr;
+  static F77_int pointr;
 
   --gg;
   --xx;
@@ -3546,13 +3547,13 @@ L911:
  *     Brett M. Averick, Richard G. Carter, and Jorge J. More'.
  */
 void dcsrch_(double* f, double* g, double* stp, double* ftol, double* gtol, double* xtol, double* stpmin, double* stpmax,
-            char* task, long* isave, double* dsave) {
+            char* task, F77_int* isave, double* dsave) {
 
   double d__1;
   static double fm, gm, fx, fy, gx, gy, fxm, fym, gxm, gym, stx, sty;
-  static long stage;
+  static F77_int stage;
   static double finit, ginit, width, ftest, gtest, stmin, stmax, width1;
-  static long brackt;
+  static F77_int brackt;
 
   --dsave;
   --isave;
@@ -3822,7 +3823,7 @@ L1000:
  *     Brett M. Averick and Jorge J. More'.
  */
 void dcstep_(double* stx, double* fx, double* dx, double* sty, double* fy, double* dy, double* stp, double* fp, double* dp,
-            long* brackt, double* stpmin, double* stpmax) {
+            F77_int* brackt, double* stpmin, double* stpmax) {
   double d__1, d__2, d__3;
   static double p, q, r__, s, sgnd, stpc, stpf, stpq, gamma, theta;
 

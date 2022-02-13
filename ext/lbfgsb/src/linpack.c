@@ -3,11 +3,10 @@
  * or “3-clause license”)
  *  Please read attached file License.txt
  */
-
-#include "linpack.h"
 #include "blas.h"
+#include "linpack.h"
 
-static long c__1 = 1;
+static F77_int c__1 = 1;
 
 /**
  *     dpofa factors a double precision symmetric positive definite
@@ -44,11 +43,11 @@ static long c__1 = 1;
  *     linpack.  this version dated 08/14/78 .
  *     cleve moler, university of new mexico, argonne national lab.
  */
-void lbfgsb_rb_dpofa_(double* a, long* lda, long* n, long* info) {
-  long a_dim1, a_offset, i__1, i__2, i__3;
-  static long j, k;
+void lbfgsb_rb_dpofa_(double* a, F77_int* lda, F77_int* n, F77_int* info) {
+  F77_int a_dim1, a_offset, i__1, i__2, i__3;
+  static F77_int j, k;
   static double s, t;
-  static long jm1;
+  static F77_int jm1;
 
   a_dim1 = *lda;
   a_offset = 1 + a_dim1;
@@ -132,9 +131,9 @@ L40:
  *     linpack. this version dated 08/14/78 .
  *     g. w. stewart, university of maryland, argonne national lab.
  */
-void lbfgsb_rb_dtrsl_(double* t, long* ldt, long* n, double* b, long* job, long* info) {
-  long t_dim1, t_offset, i__1, i__2;
-  static long j, jj, case__;
+void lbfgsb_rb_dtrsl_(double* t, F77_int* ldt, F77_int* n, double* b, F77_int* job, F77_int* info) {
+  F77_int t_dim1, t_offset, i__1, i__2;
+  static F77_int j, jj, case__;
   static double temp;
 
   /* check for zero diagonal elements. */

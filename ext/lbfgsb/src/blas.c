@@ -5,9 +5,9 @@
  */
 #include "blas.h"
 
-void lbfgsb_rb_daxpy_(long* n, double* da, double* dx, long* incx, double* dy, long* incy) {
-  long i__1;
-  static long i__, m, ix, iy, mp1;
+void lbfgsb_rb_daxpy_(F77_int* n, double* da, double* dx, F77_int* incx, double* dy, F77_int* incy) {
+  F77_int i__1;
+  static F77_int i__, m, ix, iy, mp1;
 
   --dy;
   --dx;
@@ -69,9 +69,9 @@ L40:
   return;
 }
 
-void lbfgsb_rb_dcopy_(long* n, double* dx, long* incx, double* dy, long* incy) {
-  long i__1;
-  static long i__, m, ix, iy, mp1;
+void lbfgsb_rb_dcopy_(F77_int* n, double* dx, F77_int* incx, double* dy, F77_int* incy) {
+  F77_int i__1;
+  static F77_int i__, m, ix, iy, mp1;
 
   --dy;
   --dx;
@@ -133,10 +133,10 @@ L40:
   return;
 }
 
-double lbfgsb_rb_ddot_(long* n, double* dx, long* incx, double* dy, long* incy) {
-  long i__1;
+double lbfgsb_rb_ddot_(F77_int* n, double* dx, F77_int* incx, double* dy, F77_int* incy) {
+  F77_int i__1;
   double ret_val;
-  static long i__, m, ix, iy, mp1;
+  static F77_int i__, m, ix, iy, mp1;
   static double dtemp;
 
   --dy;
@@ -199,9 +199,9 @@ L60:
   return ret_val;
 }
 
-void lbfgsb_rb_dscal_(long* n, double* da, double* dx, long* incx) {
-  long i__1, i__2;
-  static long i__, m, mp1, nincx;
+void lbfgsb_rb_dscal_(F77_int* n, double* da, double* dx, F77_int* incx) {
+  F77_int i__1, i__2;
+  static F77_int i__, m, mp1, nincx;
 
   --dx;
 

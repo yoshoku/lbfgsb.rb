@@ -43,7 +43,7 @@ module Lbfgsb
     n_elements = x_init.size
     l = Numo::DFloat.zeros(n_elements)
     u = Numo::DFloat.zeros(n_elements)
-    nbd = Numo::Int64.zeros(n_elements)
+    nbd = SZ_F77_INTEGER == 64 ? Numo::Int64.zeros(n_elements) : Numo::Int32.zeros(n_elements)
 
     unless bounds.nil?
       n_elements.times do |n|

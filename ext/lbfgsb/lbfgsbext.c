@@ -4,31 +4,43 @@ VALUE rb_mLbfgsb;
 
 static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, VALUE args, VALUE l_val, VALUE u_val,
                                  VALUE nbd_val, VALUE maxcor, VALUE ftol, VALUE gtol, VALUE maxiter, VALUE disp) {
-  long n_iter;
-  long n_fev;
-  long n_jev;
-  long max_iter = NUM2LONG(maxiter);
+  F77_int n_iter;
+  F77_int n_fev;
+  F77_int n_jev;
+#ifdef USE_INT64
+  F77_int max_iter = NUM2LONG(maxiter);
+#else
+  F77_int max_iter = NUM2INT(maxiter);
+#endif
   narray_t* x_nary;
   narray_t* l_nary;
   narray_t* u_nary;
   narray_t* nbd_nary;
-  long n;
-  long m = NUM2LONG(maxcor);
+  F77_int n;
+#ifdef USE_INT64
+  F77_int m = NUM2LONG(maxcor);
+#else
+  F77_int m = NUM2INT(maxcor);
+#endif
   double* x_ptr;
   double* l_ptr;
   double* u_ptr;
-  long* nbd_ptr;
+  F77_int* nbd_ptr;
   double f;
   double* g;
   double factr = NUM2DBL(ftol);
   double pgtol = NUM2DBL(gtol);
   double* wa;
-  long* iwa;
+  F77_int* iwa;
   char task[60];
-  long iprint = NIL_P(disp) ? -1 : NUM2LONG(disp);
+#ifdef USE_INT64
+  F77_int iprint = NIL_P(disp) ? -1 : NUM2LONG(disp);
+#else
+  F77_int iprint = NIL_P(disp) ? -1 : NUM2INT(disp);
+#endif
   char csave[60];
-  long lsave[4];
-  long isave[44];
+  F77_int lsave[4];
+  F77_int isave[44];
   double dsave[29];
   VALUE g_val;
   VALUE fg_arr;
@@ -39,7 +51,7 @@ static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, 
     rb_raise(rb_eArgError, "x must be a 1-D array.");
     return Qnil;
   }
-  n = (long)NA_SIZE(x_nary);
+  n = (F77_int)NA_SIZE(x_nary);
   if (CLASS_OF(x_val) != numo_cDFloat) {
     x_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, x_val);
   }
@@ -52,7 +64,7 @@ static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, 
     rb_raise(rb_eArgError, "l must be a 1-D array.");
     return Qnil;
   }
-  if ((long)NA_SIZE(l_nary) != n) {
+  if ((F77_int)NA_SIZE(l_nary) != n) {
     rb_raise(rb_eArgError, "The size of l must be equal to that of x.");
     return Qnil;
   }
@@ -68,7 +80,7 @@ static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, 
     rb_raise(rb_eArgError, "u must be a 1-D array.");
     return Qnil;
   }
-  if ((long)NA_SIZE(u_nary) != n) {
+  if ((F77_int)NA_SIZE(u_nary) != n) {
     rb_raise(rb_eArgError, "The size of u must be equal to that of x.");
     return Qnil;
   }
@@ -84,13 +96,19 @@ static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, 
     rb_raise(rb_eArgError, "nbd must be a 1-D array.");
     return Qnil;
   }
-  if ((long)NA_SIZE(nbd_nary) != n) {
+  if ((F77_int)NA_SIZE(nbd_nary) != n) {
     rb_raise(rb_eArgError, "The size of nbd must be equal to that of x.");
     return Qnil;
   }
+#ifdef USE_INT64
   if (CLASS_OF(nbd_val) != numo_cInt64) {
     nbd_val = rb_funcall(numo_cInt64, rb_intern("cast"), 1, nbd_val);
   }
+#else
+  if (CLASS_OF(nbd_val) != numo_cInt32) {
+    nbd_val = rb_funcall(numo_cInt32, rb_intern("cast"), 1, nbd_val);
+  }
+#endif
   if (!RTEST(nary_check_contiguous(nbd_val))) {
     nbd_val = nary_dup(nbd_val);
   }
@@ -98,10 +116,10 @@ static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, 
   x_ptr = (double*)na_get_pointer_for_read_write(x_val);
   l_ptr = (double*)na_get_pointer_for_read(l_val);
   u_ptr = (double*)na_get_pointer_for_read(u_val);
-  nbd_ptr = (long*)na_get_pointer_for_read(nbd_val);
+  nbd_ptr = (F77_int*)na_get_pointer_for_read(nbd_val);
   g = ALLOC_N(double, n);
   wa = ALLOC_N(double, (2 * m + 5) * n + 12 * m * m + 12 * m);
-  iwa = ALLOC_N(long, 3 * n);
+  iwa = ALLOC_N(F77_int, 3 * n);
 
   g_val = Qnil;
   f = 0.0;
@@ -145,9 +163,15 @@ static VALUE lbfgsb_min_l_bfgs_b(VALUE self, VALUE fnc, VALUE x_val, VALUE jcb, 
   rb_hash_aset(ret, ID2SYM(rb_intern("x")), x_val);
   rb_hash_aset(ret, ID2SYM(rb_intern("fnc")), DBL2NUM(f));
   rb_hash_aset(ret, ID2SYM(rb_intern("jcb")), g_val);
+#ifdef USE_INT64
   rb_hash_aset(ret, ID2SYM(rb_intern("n_iter")), LONG2NUM(n_iter));
   rb_hash_aset(ret, ID2SYM(rb_intern("n_fev")), LONG2NUM(n_fev));
   rb_hash_aset(ret, ID2SYM(rb_intern("n_jev")), LONG2NUM(n_jev));
+#else
+  rb_hash_aset(ret, ID2SYM(rb_intern("n_iter")), INT2NUM(n_iter));
+  rb_hash_aset(ret, ID2SYM(rb_intern("n_fev")), INT2NUM(n_fev));
+  rb_hash_aset(ret, ID2SYM(rb_intern("n_jev")), INT2NUM(n_jev));
+#endif
   rb_hash_aset(ret, ID2SYM(rb_intern("success")), strncmp(task, "CONV", 4) == 0 ? Qtrue : Qfalse);
 
   RB_GC_GUARD(x_val);
@@ -162,6 +186,13 @@ void Init_lbfgsbext(void) {
   rb_mLbfgsb = rb_define_module("Lbfgsb");
   /* The value of double epsilon used in the native extension. */
   rb_define_const(rb_mLbfgsb, "DBL_EPSILON", DBL2NUM(DBL_EPSILON));
+#ifdef USE_INT64
+  /* The bit size of fortran integer. */
+  rb_define_const(rb_mLbfgsb, "SZ_F77_INTEGER", INT2NUM(64));
+#else
+  /* The bit size of fortran integer. */
+  rb_define_const(rb_mLbfgsb, "SZ_F77_INTEGER", INT2NUM(32));
+#endif
   /* @!visibility private */
   rb_define_module_function(rb_mLbfgsb, "min_l_bfgs_b", lbfgsb_min_l_bfgs_b, 12);
 }

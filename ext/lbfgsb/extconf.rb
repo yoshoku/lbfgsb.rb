@@ -1,6 +1,8 @@
 require 'mkmf'
 require 'numo/narray'
 
+$defs << '-DUSE_INT64' if with_config('use-int64', false)
+
 $LOAD_PATH.each do |lp|
   if File.exist?(File.join(lp, 'numo/numo/narray.h'))
     $INCFLAGS = "-I#{lp}/numo #{$INCFLAGS}"
