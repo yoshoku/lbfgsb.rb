@@ -659,8 +659,8 @@ void mainlb_(F77_int* n, F77_int* m, double* x, double* l, double* u, F77_int* n
     if (strncmp(task, "STOP", 4) == 0) {
       if (strncmp(task + 6, "CPU", 3) == 0) {
         /* restore the previous iterate. */
-        lbfgsb_rb_dcopy_(n, &t[1], &c__1, &x[1], &c__1);
-        lbfgsb_rb_dcopy_(n, &r__[1], &c__1, &g[1], &c__1);
+        dcopy_(n, &t[1], &c__1, &x[1], &c__1);
+        dcopy_(n, &r__[1], &c__1, &g[1], &c__1);
         *f = fold;
       }
       goto L999;
@@ -695,7 +695,7 @@ L222:
 
   if (!cnstnd && col > 0) {
     /* skip the search for GCP. */
-    lbfgsb_rb_dcopy_(n, &x[1], &c__1, &z__[1], &c__1);
+    dcopy_(n, &x[1], &c__1, &z__[1], &c__1);
     wrk = updatd;
     nseg = 0;
     goto L333;
@@ -814,8 +814,8 @@ L666:
           &xstep, &stpmx, &iter, &ifun, &iback, &nfgv, &info, task, &boxed, &cnstnd, csave, &isave[22], &dsave[17]);
   if (info != 0 || iback >= 20) {
     /* restore the previous iterate. */
-    lbfgsb_rb_dcopy_(n, &t[1], &c__1, &x[1], &c__1);
-    lbfgsb_rb_dcopy_(n, &r__[1], &c__1, &g[1], &c__1);
+    dcopy_(n, &t[1], &c__1, &x[1], &c__1);
+    dcopy_(n, &r__[1], &c__1, &g[1], &c__1);
     *f = fold;
     if (col == 0) {
       /* abnormal termination. */
@@ -889,13 +889,13 @@ L777:
   for (i__ = 1; i__ <= i__1; ++i__) {
     r__[i__] = g[i__] - r__[i__];
   }
-  rr = lbfgsb_rb_ddot_(n, &r__[1], &c__1, &r__[1], &c__1);
+  rr = ddot_(n, &r__[1], &c__1, &r__[1], &c__1);
   if (stp == 1.) {
     dr = gd - gdold;
     ddum = -gdold;
   } else {
     dr = (gd - gdold) * stp;
-    lbfgsb_rb_dscal_(n, &stp, &d__[1], &c__1);
+    dscal_(n, &stp, &d__[1], &c__1);
     ddum = -gdold * stp;
   }
   if (dr <= epsmch * ddum) {
@@ -1164,7 +1164,7 @@ void bmv_(F77_int* m, double* sy, double* wt, F77_int* col, double* v, double* p
     p[i2] = v[i2] + sum;
   }
   /* Solve the triangular system */
-  lbfgsb_rb_dtrsl_(&wt[wt_offset], m, col, &p[*col + 1], &c__11, info);
+  dtrsl_(&wt[wt_offset], m, col, &p[*col + 1], &c__11, info);
   if (*info != 0) {
     return;
   }
@@ -1176,7 +1176,7 @@ void bmv_(F77_int* m, double* sy, double* wt, F77_int* col, double* v, double* p
   /* PART II: solve [ -D^(1/2)   D^(-1/2)*L'  ] [ p1 ] = [ p1 ] */
   /*                [  0         J'           ] [ p2 ]   [ p2 ]. */
   /*   solve J^Tp2=p2. */
-  lbfgsb_rb_dtrsl_(&wt[wt_offset], m, col, &p[*col + 1], &c__1, info);
+  dtrsl_(&wt[wt_offset], m, col, &p[*col + 1], &c__1, info);
   if (*info != 0) {
     return;
   }
@@ -1429,7 +1429,7 @@ void cauchy_(F77_int* n, double* x, double* l, double* u, F77_int* nbd, double* 
     if (*iprint >= 0) {
       fprintf(stdout, " Subgnorm = 0.  GCP = X.\n");
     }
-    lbfgsb_rb_dcopy_(n, &x[1], &c__1, &xcp[1], &c__1);
+    dcopy_(n, &x[1], &c__1, &xcp[1], &c__1);
     return;
   }
   bnded = TRUE_;
@@ -1528,10 +1528,10 @@ void cauchy_(F77_int* n, double* x, double* l, double* u, F77_int* nbd, double* 
   /*   The smallest of the nbreak breakpoints is in t(ibkmin)=bkmin. */
   if (*theta != 1.) {
     /* complete the initialization of p for theta not= one. */
-    lbfgsb_rb_dscal_(col, theta, &p[*col + 1], &c__1);
+    dscal_(col, theta, &p[*col + 1], &c__1);
   }
   /* Initialize GCP xcp = x. */
-  lbfgsb_rb_dcopy_(n, &x[1], &c__1, &xcp[1], &c__1);
+  dcopy_(n, &x[1], &c__1, &xcp[1], &c__1);
   if (nbreak == 0 && nfree == *n + 1) {
     /* is a zero vector, return with the initial xcp as GCP. */
     if (*iprint > 100) {
@@ -1562,7 +1562,7 @@ void cauchy_(F77_int* n, double* x, double* l, double* u, F77_int* nbd, double* 
     if (*info != 0) {
       return;
     }
-    f2 -= lbfgsb_rb_ddot_(&col2, &v[1], &c__1, &p[1], &c__1);
+    f2 -= ddot_(&col2, &v[1], &c__1, &p[1], &c__1);
   }
   dtm = -f1 / f2;
   tsum = 0.;
@@ -1651,7 +1651,7 @@ L777:
   f2 -= *theta * dibp2;
   if (*col > 0) {
     /* update c = c + dt*p. */
-    lbfgsb_rb_daxpy_(&col2, &dt, &p[1], &c__1, &c__[1], &c__1);
+    daxpy_(&col2, &dt, &p[1], &c__1, &c__[1], &c__1);
     /* choose wbp, */
     /* the row of W corresponding to the breakpoint encountered. */
     pointr = *head;
@@ -1666,12 +1666,12 @@ L777:
     if (*info != 0) {
       return;
     }
-    wmc = lbfgsb_rb_ddot_(&col2, &c__[1], &c__1, &v[1], &c__1);
-    wmp = lbfgsb_rb_ddot_(&col2, &p[1], &c__1, &v[1], &c__1);
-    wmw = lbfgsb_rb_ddot_(&col2, &wbp[1], &c__1, &v[1], &c__1);
+    wmc = ddot_(&col2, &c__[1], &c__1, &v[1], &c__1);
+    wmp = ddot_(&col2, &p[1], &c__1, &v[1], &c__1);
+    wmw = ddot_(&col2, &wbp[1], &c__1, &v[1], &c__1);
     /* update p = p - dibp*wbp. */
     d__1 = -dibp;
-    lbfgsb_rb_daxpy_(&col2, &d__1, &wbp[1], &c__1, &p[1], &c__1);
+    daxpy_(&col2, &d__1, &wbp[1], &c__1, &p[1], &c__1);
     /* complete updating f1 and f2 while col > 0. */
     f1 += dibp * wmc;
     f2 = f2 + dibp * 2. * wmp - dibp2 * wmw;
@@ -1703,12 +1703,12 @@ L888:
   tsum += dtm;
   /* Move free variables (i.e., the ones w/o breakpoints) and */
   /*   the variables whose breakpoints haven't been reached. */
-  lbfgsb_rb_daxpy_(n, &tsum, &d__[1], &c__1, &xcp[1], &c__1);
+  daxpy_(n, &tsum, &d__[1], &c__1, &xcp[1], &c__1);
 L999:
   /* Update c = c + dtm*p = W'(x^c - x) */
   /*   which will be used in computing r = Z'(B(x^c - x) + g). */
   if (*col > 0) {
-    lbfgsb_rb_daxpy_(&col2, &dtm, &p[1], &c__1, &c__[1], &c__1);
+    daxpy_(&col2, &dtm, &p[1], &c__1, &c__[1], &c__1);
   }
   if (*iprint > 100) {
     fprintf(stdout, "Cauchy X =  \n");
@@ -2012,11 +2012,11 @@ void formk_(F77_int* n, F77_int* nsub, F77_int* ind, F77_int* nenter, F77_int* i
       for (jy = 1; jy <= i__1; ++jy) {
         js = *m + jy;
         i__2 = *m - jy;
-        lbfgsb_rb_dcopy_(&i__2, &wn1[jy + 1 + (jy + 1) * wn1_dim1], &c__1, &wn1[jy + jy * wn1_dim1], &c__1);
+        dcopy_(&i__2, &wn1[jy + 1 + (jy + 1) * wn1_dim1], &c__1, &wn1[jy + jy * wn1_dim1], &c__1);
         i__2 = *m - jy;
-        lbfgsb_rb_dcopy_(&i__2, &wn1[js + 1 + (js + 1) * wn1_dim1], &c__1, &wn1[js + js * wn1_dim1], &c__1);
+        dcopy_(&i__2, &wn1[js + 1 + (js + 1) * wn1_dim1], &c__1, &wn1[js + js * wn1_dim1], &c__1);
         i__2 = *m - 1;
-        lbfgsb_rb_dcopy_(&i__2, &wn1[*m + 2 + (jy + 1) * wn1_dim1], &c__1, &wn1[*m + 1 + jy * wn1_dim1], &c__1);
+        dcopy_(&i__2, &wn1[*m + 2 + (jy + 1) * wn1_dim1], &c__1, &wn1[*m + 1 + jy * wn1_dim1], &c__1);
       }
     }
     /* put new rows in blocks (1,1), (2,1) and (2,2). */
@@ -2167,7 +2167,7 @@ void formk_(F77_int* n, F77_int* nsub, F77_int* ind, F77_int* nenter, F77_int* i
   /*                                [(-L_a +R_z)L'^-1   S'AA'S*theta  ] */
   /*    first Cholesky factor (1,1) block of wn to get LL' */
   /*                      with L' stored in the upper triangle of wn. */
-  lbfgsb_rb_dpofa_(&wn[wn_offset], &m2, col, info);
+  dpofa_(&wn[wn_offset], &m2, col, info);
   if (*info != 0) {
     *info = -1;
     return;
@@ -2176,7 +2176,7 @@ void formk_(F77_int* n, F77_int* nsub, F77_int* ind, F77_int* nenter, F77_int* i
   col2 = *col << 1;
   i__1 = col2;
   for (js = *col + 1; js <= i__1; ++js) {
-    lbfgsb_rb_dtrsl_(&wn[wn_offset], &m2, col, &wn[js * wn_dim1 + 1], &c__11, info);
+    dtrsl_(&wn[wn_offset], &m2, col, &wn[js * wn_dim1 + 1], &c__11, info);
   }
   /* Form S'AA'S*theta + (L^-1(-L_a'+R_z'))'L^-1(-L_a'+R_z') in the */
   /*    upper triangle of (2,2) block of wn. */
@@ -2184,11 +2184,11 @@ void formk_(F77_int* n, F77_int* nsub, F77_int* ind, F77_int* nenter, F77_int* i
   for (is = *col + 1; is <= i__1; ++is) {
     i__2 = col2;
     for (js = is; js <= i__2; ++js) {
-      wn[is + js * wn_dim1] += lbfgsb_rb_ddot_(col, &wn[is * wn_dim1 + 1], &c__1, &wn[js * wn_dim1 + 1], &c__1);
+      wn[is + js * wn_dim1] += ddot_(col, &wn[is * wn_dim1 + 1], &c__1, &wn[js * wn_dim1 + 1], &c__1);
     }
   }
   /* Cholesky factorization of (2,2) block of wn. */
-  lbfgsb_rb_dpofa_(&wn[*col + 1 + (*col + 1) * wn_dim1], &m2, col, info);
+  dpofa_(&wn[*col + 1 + (*col + 1) * wn_dim1], &m2, col, info);
   if (*info != 0) {
     *info = -2;
   }
@@ -2251,7 +2251,7 @@ void formt_(F77_int* m, double* wt, double* sy, double* ss, F77_int* col, double
   }
   /* Cholesky factorize T to J*J' with */
   /*    J' stored in the upper triangle of wt. */
-  lbfgsb_rb_dpofa_(&wt[wt_offset], m, col, info);
+  dpofa_(&wt[wt_offset], m, col, info);
   if (*info != 0) {
     *info = -3;
   }
@@ -2499,7 +2499,7 @@ void lnsrlb_(F77_int* n, double* l, double* u, F77_int* nbd, double* x, double* 
   if (strncmp(task, "FG_LN", 5) == 0) {
     goto L556;
   }
-  *dtd = lbfgsb_rb_ddot_(n, &d__[1], &c__1, &d__[1], &c__1);
+  *dtd = ddot_(n, &d__[1], &c__1, &d__[1], &c__1);
   *dnorm = sqrt(*dtd);
   /* Determine the maximum step length. */
   *stpmx = 1e10;
@@ -2536,14 +2536,14 @@ void lnsrlb_(F77_int* n, double* l, double* u, F77_int* nbd, double* x, double* 
   } else {
     *stp = 1.;
   }
-  lbfgsb_rb_dcopy_(n, &x[1], &c__1, &t[1], &c__1);
-  lbfgsb_rb_dcopy_(n, &g[1], &c__1, &r__[1], &c__1);
+  dcopy_(n, &x[1], &c__1, &t[1], &c__1);
+  dcopy_(n, &g[1], &c__1, &r__[1], &c__1);
   *fold = *f;
   *ifun = 0;
   *iback = 0;
   strcpy(csave, "START");
 L556:
-  *gd = lbfgsb_rb_ddot_(n, &g[1], &c__1, &d__[1], &c__1);
+  *gd = ddot_(n, &g[1], &c__1, &d__[1], &c__1);
   if (*ifun == 0) {
     *gdold = *gd;
     if (*gd >= 0.) {
@@ -2562,7 +2562,7 @@ L556:
     ++(*nfgv);
     *iback = *ifun - 1;
     if (*stp == 1.) {
-      lbfgsb_rb_dcopy_(n, &z__[1], &c__1, &x[1], &c__1);
+      dcopy_(n, &z__[1], &c__1, &x[1], &c__1);
     } else {
       i__1 = *n;
       for (i__ = 1; i__ <= i__1; ++i__) {
@@ -2624,8 +2624,8 @@ void matupd_(F77_int* n, F77_int* m, double* ws, double* wy, double* sy, double*
     *head = *head % *m + 1;
   }
   /* Update matrices WS and WY. */
-  lbfgsb_rb_dcopy_(n, &d__[1], &c__1, &ws[*itail * ws_dim1 + 1], &c__1);
-  lbfgsb_rb_dcopy_(n, &r__[1], &c__1, &wy[*itail * wy_dim1 + 1], &c__1);
+  dcopy_(n, &d__[1], &c__1, &ws[*itail * ws_dim1 + 1], &c__1);
+  dcopy_(n, &r__[1], &c__1, &wy[*itail * wy_dim1 + 1], &c__1);
   /* Set theta=yy/ys. */
   *theta = *rr / *dr;
   /* Form the middle matrix in B. */
@@ -2635,9 +2635,9 @@ void matupd_(F77_int* n, F77_int* m, double* ws, double* wy, double* sy, double*
     /* move old information */
     i__1 = *col - 1;
     for (j = 1; j <= i__1; ++j) {
-      lbfgsb_rb_dcopy_(&j, &ss[(j + 1) * ss_dim1 + 2], &c__1, &ss[j * ss_dim1 + 1], &c__1);
+      dcopy_(&j, &ss[(j + 1) * ss_dim1 + 2], &c__1, &ss[j * ss_dim1 + 1], &c__1);
       i__2 = *col - j;
-      lbfgsb_rb_dcopy_(&i__2, &sy[j + 1 + (j + 1) * sy_dim1], &c__1, &sy[j + j * sy_dim1], &c__1);
+      dcopy_(&i__2, &sy[j + 1 + (j + 1) * sy_dim1], &c__1, &sy[j + j * sy_dim1], &c__1);
     }
   }
   /* add new information: the last row of SY */
@@ -2645,8 +2645,8 @@ void matupd_(F77_int* n, F77_int* m, double* ws, double* wy, double* sy, double*
   pointr = *head;
   i__1 = *col - 1;
   for (j = 1; j <= i__1; ++j) {
-    sy[*col + j * sy_dim1] = lbfgsb_rb_ddot_(n, &d__[1], &c__1, &wy[pointr * wy_dim1 + 1], &c__1);
-    ss[j + *col * ss_dim1] = lbfgsb_rb_ddot_(n, &ws[pointr * ws_dim1 + 1], &c__1, &d__[1], &c__1);
+    sy[*col + j * sy_dim1] = ddot_(n, &d__[1], &c__1, &wy[pointr * wy_dim1 + 1], &c__1);
+    ss[j + *col * ss_dim1] = ddot_(n, &ws[pointr * ws_dim1 + 1], &c__1, &d__[1], &c__1);
     pointr = pointr % *m + 1;
   }
   if (*stp == 1.) {
@@ -3272,7 +3272,7 @@ void subsm_(F77_int* n, F77_int* m, F77_int* nsub, F77_int* ind, double* l, doub
   /* Compute wv:=K^(-1)wv. */
   m2 = *m << 1;
   col2 = *col << 1;
-  lbfgsb_rb_dtrsl_(&wn[wn_offset], &m2, &col2, &wv[1], &c__11, info);
+  dtrsl_(&wn[wn_offset], &m2, &col2, &wv[1], &c__11, info);
   if (*info != 0) {
     return;
   }
@@ -3280,7 +3280,7 @@ void subsm_(F77_int* n, F77_int* m, F77_int* nsub, F77_int* ind, double* l, doub
   for (i__ = 1; i__ <= i__1; ++i__) {
     wv[i__] = -wv[i__];
   }
-  lbfgsb_rb_dtrsl_(&wn[wn_offset], &m2, &col2, &wv[1], &c__1, info);
+  dtrsl_(&wn[wn_offset], &m2, &col2, &wv[1], &c__1, info);
   if (*info != 0) {
     return;
   }
@@ -3297,12 +3297,12 @@ void subsm_(F77_int* n, F77_int* m, F77_int* nsub, F77_int* ind, double* l, doub
     pointr = pointr % *m + 1;
   }
   d__1 = 1. / *theta;
-  lbfgsb_rb_dscal_(nsub, &d__1, &d__[1], &c__1);
+  dscal_(nsub, &d__1, &d__[1], &c__1);
 
   /* ----------------------------------------------------------------- */
   /* Let us try the projection, d is the Newton direction */
   *iword = 0;
-  lbfgsb_rb_dcopy_(n, &x[1], &c__1, &xp[1], &c__1);
+  dcopy_(n, &x[1], &c__1, &xp[1], &c__1);
 
   i__1 = *nsub;
   for (i__ = 1; i__ <= i__1; ++i__) {
@@ -3355,7 +3355,7 @@ void subsm_(F77_int* n, F77_int* m, F77_int* nsub, F77_int* ind, double* l, doub
     dd_p__ += (x[i__] - xx[i__]) * gg[i__];
   }
   if (dd_p__ > 0.) {
-    lbfgsb_rb_dcopy_(n, &xp[1], &c__1, &x[1], &c__1);
+    dcopy_(n, &xp[1], &c__1, &x[1], &c__1);
     fprintf(stderr, "  Positive dir derivative in projection\n");
     fprintf(stderr, "  Using the backtracking step\n");
   } else {
