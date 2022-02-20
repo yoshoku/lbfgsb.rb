@@ -27,6 +27,20 @@ Or install it yourself as:
 
     $ gem install lbfgsb
 
+Notes: lbfgsb.rb uses 32-bit integer for the integer type in its native code.
+If you want to use 64-bit integer, give the installation option as below:
+
+```
+$ gem install lbfgsb -- --with-use-int64
+```
+
+In adition, if you want to use an external BLAS library for linear algebra on LBFGSB optimization,
+give the directory and library in the installation options as follows:
+
+```
+$ gem install lbfgsb -- --with-blas-dir=/opt/local/openblas/lib --with-blas-lib=openblas
+```
+
 ## Usage
 Example 1. Logistic Regression
 
