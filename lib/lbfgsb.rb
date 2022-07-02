@@ -5,6 +5,7 @@ require 'numo/narray'
 require 'lbfgsb/version'
 require 'lbfgsb/lbfgsbext'
 
+# Lbfgsb.rb is a Ruby binding for L-BFGS-B with Numo::NArray.
 module Lbfgsb
   module_function
 
@@ -39,7 +40,7 @@ module Lbfgsb
   #   - jcb [Numo::Narray] Values of the jacobian
   #   - task [String] Description of the cause of the termination.
   #   - success [Boolean] Whether or not the optimization exited successfully.
-  def minimize(fnc:, x_init:, jcb:, args: nil, bounds: nil, factr: 1e7, pgtol: 1e-5, maxcor: 10, maxiter: 15_000, verbose: nil)
+  def minimize(fnc:, x_init:, jcb:, args: nil, bounds: nil, factr: 1e7, pgtol: 1e-5, maxcor: 10, maxiter: 15_000, verbose: nil) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     n_elements = x_init.size
     l = Numo::DFloat.zeros(n_elements)
     u = Numo::DFloat.zeros(n_elements)
