@@ -1,3 +1,6 @@
+## 0.5.1
+- Refactor codes and configs with RuboCop.
+
 ## 0.5.0
 - Add build option to select FORTRAN integer bit size.
 
