@@ -1,0 +1,68 @@
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  Exclude:
+    - 'ext/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'Steepfile'
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Layout/LineLength:
+  AllowedPatterns: ['(\A|\s)#']
+  Max: 128
+
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+Metrics/MethodLength:
+  Max: 24
+
+Metrics/ParameterLists:
+  Max: 10
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - 'lib/annoy-rb.rb'
+
+Naming/MethodParameterName:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 16
+
+RSpec/FilePath:
+  Exclude:
+    - 'spec/driver1_spec.rb'
+    - 'spec/driver2_spec.rb'
+    - 'spec/driver3_spec.rb'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 16
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
