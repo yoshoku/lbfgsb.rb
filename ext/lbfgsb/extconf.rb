@@ -33,6 +33,12 @@ $srcs = Dir.glob("#{$srcdir}/**/*.c").map { |path| File.basename(path) }
 blas_dir = with_config('blas-dir')
 $LDFLAGS = "-L#{blas_dir} #{$LDFLAGS}" unless blas_dir.nil?
 
+if RUBY_PLATFORM.match?(/darwin/) && Gem::Version.new('3.1.0') <= Gem::Version.new(RUBY_VERSION)
+  if try_link('int main(void){return 0;}', '-Wl,-undefined,dynamic_lookup')
+    $LDFLAGS << ' -Wl,-undefined,dynamic_lookup'
+  end
+end
+
 blas_lib = with_config('blas-lib')
 unless blas_lib.nil?
   abort "#{blas_lib} not found." unless have_library(blas_lib)
