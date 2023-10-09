@@ -53,10 +53,7 @@ RSpec/ExampleLength:
   Max: 16
 
 RSpec/FilePath:
-  Exclude:
-    - 'spec/driver1_spec.rb'
-    - 'spec/driver2_spec.rb'
-    - 'spec/driver3_spec.rb'
+  Enabled: false
 
 RSpec/MultipleMemoizedHelpers:
   Max: 16
@@ -66,6 +63,12 @@ RSpec/NamedSubject:
 
 RSpec/NestedGroups:
   Max: 5
+
+RSpec/SpecFilePathFormat:
+  Exclude:
+    - 'spec/driver1_spec.rb'
+    - 'spec/driver2_spec.rb'
+    - 'spec/driver3_spec.rb'
 
 Style/YodaExpression:
   Enabled: false
