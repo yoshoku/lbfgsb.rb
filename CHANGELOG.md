@@ -1,3 +1,6 @@
+## 0.6.0
+- Remove unmainteined type declaration file.
+
 ## 0.5.2
 - Fix build failure with Xcode 14 and Ruby 3.1.x.
 
