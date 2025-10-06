@@ -1,5 +1,7 @@
 # Lbfgsb.rb
 
+**This project is discontinued. Development has been moved to [Numo::Optimize](https://github.com/yoshoku/numo-optimize).**
+
 [![Build Status](https://github.com/yoshoku/lbfgsb.rb/workflows/build/badge.svg)](https://github.com/yoshoku/lbfgsb.rb/actions?query=workflow%3Abuild)
 [![Gem Version](https://badge.fury.io/rb/lbfgsb.svg)](https://badge.fury.io/rb/lbfgsb)
 [![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/suika/blob/main/LICENSE.txt)
